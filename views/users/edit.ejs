@@ -1,0 +1,71 @@
+ <% include ../partials/header %>
+ 
+
+<div class="container">
+    
+  <form action="/user/<%=foundUser._id%>?_method=PUT" method="POST" style="width: 80%;" class="ui form">
+    <div class="field">
+      <label>Name</label>
+      <input value='<%=foundUser.first%>' type="text" name="userDet[first]" placeholder="name">
+    </div>
+    
+    <div class="field">
+      <label>Last Name</label>
+      <input value='<%=foundUser.last%>' type="text" name="userDet[last]" placeholder="last name">
+    </div>
+    
+    <div class="field">
+      <label>E-mail</label>
+      <input value='<%=foundUser.email%>' type="text" name="userDet[email]" placeholder="email">
+    </div>
+    <hr>
+    
+    <div class="field">
+      <label>User Name</label>
+      <input value='<%=foundUser.username%>' type="text" name="userDet[username]" placeholder="Username">
+    </div>
+    
+     <div class="field">
+      <label>Home City</label>
+      <input value='<%=foundUser.homeCity%>' type="text" name="userDet[homeCity]" placeholder="homeCity">
+    </div>
+    
+     <div class="field">
+      <label>Home Country</label>
+      <input value='<%=foundUser.homeCountry%>' type="text" name="userDet[homeCountry]" placeholder="homeCountry">
+     </div>
+    
+    <div class="field">
+      <label>Password</label>
+      <input value='' type="text" name="userDet[password]" placeholder="password">
+    </div>
+    
+    <div class="field">
+      <label>Avatar</label>
+      <input value='<%=foundUser.avatar%>' type="text" name="userDet[avatar]" placeholder="insert URL to your avatar">
+    </div>
+    <div class="field">
+      <label>Country Code</label>
+      <input value='<%=foundUser.countryCode%>' type="text" name="userDet[countryCode]" placeholder="insert URL to your avatar">
+    </div>
+   <div class="field">
+      <label>Visited Countries</label>
+      <input value='<%=foundUser.countriesVisited%>' type="text" name="userDet[countriesVisited]" placeholder="insert URL to your avatar">
+    </div>
+    <div class="field">
+      <div>
+        <input type="checkbox"  required>
+        <label style="padding-top: 3px;">I agree to the <a href="/">Terms and Conditions</a></label>
+      </div>
+    </div>
+    
+      <button class="ui button" type="submit">Submit</button>
+  
+  </form>
+    
+</div>
+
+
+
+ 
+ <% include ../partials/footer %>

@@ -1,0 +1,23 @@
+<% include ../partials/header %>
+<div class="container showpage">
+     <div class="well">
+            <div class="ui form">     
+             <!-- Add new comment form-->
+                  <form action="/campgrounds/<%= campground_id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                  
+             <br>  
+                    <div  class="field">
+                       <textarea style="width: 80%;" rows="12" name="comment[text]" > Start writing your comments here</textarea>
+                    </div>
+                    
+                    <div  class="field">
+                      <button class="btn btn-xs btn-green" >Submitt</button>
+                    </div>
+            
+                    </form>
+        </div>
+    </div>
+ </div>
+        
+<% include ../partials/footer %>
+ 

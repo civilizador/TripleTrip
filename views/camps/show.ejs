@@ -1,0 +1,92 @@
+
+<% include ../partials/header %>
+<div class="container showpage">
+    
+     <div  class="row">
+          <div class="col-md-3">
+          <p class="lead">Map</p>
+          <div class="list-group">
+                <li>Info1</li>
+                <li>Info2</li>
+                <li>Info3</li>
+          </div>
+     </div>
+            
+     <div class="col-md-9">
+          <div class="img-thumbnail">
+          <div>
+               <h1 style="display: inline"><%= campDesc.name %></h1> <span class="pull-right btn btn-sl btn-warning">$<%= campDesc.price %> Per day</span>
+          </div>
+          <div class="img-thumbnail"> 
+               <img  class="img-responsive"  src="<%= campDesc.image %>" > 
+          </div>
+          <div> 
+          <h3><a href="/">  <%=  campDesc.name  %> </a> 
+          <span> 
+          <%if(currentUser && campDesc.author.id.equals(currentUser._id)){ %>
+               <a class="btn btn-xs btn-warning" href="/index/<%= campDesc._id %>/edit"> Edit</a> 
+          <% } %>
+          </span>
+          </h3><p><em>Submitted by: <a href="/user/<%= campDesc.author.id%>"> <%= campDesc.author.username %> </a>, <%= moment(campDesc.created).fromNow() %></em> </p>                       
+               <p>   <%=  campDesc.desc %> </p> 
+               <p> Submitted by: <%=  campDesc.author.username  %> </p>
+          </div>            
+     </div>
+            
+   
+            <hr>
+             
+        
+                      <!-- Add new comment form-->
+                           <!--NEW COMMENTS FEED-->
+  
+<div class="ui comments">
+  <h3 class="ui dividing header">Comments</h3>
+  <!--Printing Comments -->
+        <% campDesc.comments.forEach(function(comments){%>
+    <div class="comment">
+        <a class="avatar"> <img src="https://www.powerkiteshop.com/images/productimages/surf/wainmanpassport2012.jpg"> </a>
+    <div class="content">
+        <a class="author"><%= comments.author.username %></a>
+      <div class="metadata">
+        <div class="date"><span class="pull-right"><%= moment(comments.created).fromNow() %></span>
+</div>
+      </div>
+      <div class="text">
+        <h4><%= comments.text %></h4>
+      </div>
+    </div>  
+              
+                <div style="display: none;" class="col-md-12"> 
+                    <a class="btn btn-info" href="/index/<%= campDesc._id %>/comments/<%=comments._id %>/edit">Edit</a>
+                    <br>
+                </div>  
+                   
+                <% })%>
+   
+        <form class="ui reply form" action="/index/<%=campDesc._id%>/comments" method="POST">
+                  
+                <br>  
+                    <div  class="field">
+                       <textarea style="width: 80%;" rows="12" name="comment[text]" > Start writing your comments here</textarea>
+                    </div>
+                    
+                    <div  class="field">
+                      <button class="ui primary submit labeled icon button" >  <i class="icon edit"></i>Submitt</button>
+                    </div>
+        </form>
+    </div>
+  </div>
+</div>
+    </div>
+ </div>
+    
+    </div>  
+</div>
+
+
+
+
+         
+
+<% include ../partials/footer %>

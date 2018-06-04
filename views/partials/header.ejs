@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>When travel is in your DNA</title>
+	
+<link rel="stylesheet" href="/stylesheets/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" >  
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.css">
+<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <script>  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		
+		<!--NAV BAR-->
+<nav class="navbar navbar-default navbar-light bg-light">
+<div class="container-fluid">
+     <div class="navbar-header">
+        <a class="navbar-brand" href="/index">Triple Trip</a> 
+     </div>
+     <div class="collapse navbar-collapse" > 
+          <ul class="nav navbar-nav navbar-right">
+          <!--if(!currentUser) check if there is NO current user then show Login and Register-->
+          <% if(!currentUser){ %> 
+               <li> <a href="/login">Login </a></li>
+               <li><a href="/register">Register</a></li>
+          <!-- Otherwise show Logout -->
+          <% } else { %>
+          
+               <li> <a href="/user/<%= currentUser.id%>">Signed in as: <%= currentUser.username %> </a> </li>
+               <li> <a href="/logout">Logout </a> </li>
+               <% } %>        
+          </ul>
+    </div>
+</div>
+</nav>
+
+<div class="container">
+     <% if(error && error.length > 0){ %>
+          <div class="alert alert-danger" role="alert">
+               <%= error %>
+          </div>
+     <% } %>
+     <% if(success && success.length > 0){ %>
+          <div class="alert alert-success" role="alert">
+               <%= success %>
+          </div>
+     <% } %>
+</div>
+
+
+
+ 

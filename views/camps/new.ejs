@@ -1,0 +1,124 @@
+<% include ../partials/header %>
+
+<!--MAP-->
+
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 70%;
+  height: 400px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/ammap.js"></script>
+<script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+<!-- Chart code -->
+<script>
+let clicked = false;
+  map = AmCharts.makeChart("chartdiv", { 
+  "type": "map",
+  "theme": "dark",
+  "projection": "eckert3",
+  "dataProvider": {
+    "map": "worldLow",
+    "getAreasFromMap": true
+  },
+  "areasSettings": {
+    "selectedColor": "rgb(79, 46, 22, 0.75)",
+    "selectable": true,
+    "autoZoom": true,
+  },
+   
+  "listeners": [{
+    "event": "clickMapObject",
+    "method": function(e) {
+         clicked=true;
+        if (e.mapObject.objectType !== "MapArea")
+        return;
+        var area = e.mapObject;
+        area.showAsSelected = !area.showAsSelected;
+        e.chart.returnInitialColor(area);
+        // making ajax call to get capital of the country  
+        document.getElementById("countryInput").value = getSelectedCountries();
+        
+        
+          function getSelectedCountries() {
+  var selected;
+    
+  for(var i = 0; i < map.dataProvider.areas.length; i++) {
+    if(map.dataProvider.areas[i].showAsSelected)
+      selected=map.dataProvider.areas[i].enTitle;
+      
+  }
+  return selected;
+}
+     } 
+   }]
+ });
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>
+
+<!--END of MAP-->
+
+
+<div class="container">
+<h1 id="submith1">Create a new Post</h1>
+
+<div class="row">
+
+<div class="submitform">
+<form  action="/index" method="POST">
+     <label>Title</label>
+     <div class="form-group">
+          <input class="form-control" type="text" placeholder="Title" name="name">
+     </div>
+     <label>Country</label>
+     <div class="form-group">
+          <input id="countryInput" class="form-control" type="text" placeholder="Select country that You visited" name="country">
+     </div>
+     <div class="form-group">
+    <label for="exampleFormControlSelect2">Select cities that you visited</label>
+    <select multiple class="form-control" id="exampleFormControlSelect2">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+  </div>
+     <label>Average daily expense</label>
+     <div class="form-group">
+          <input class="form-control" type="text" placeholder="Average daily expense" name="price">
+     </div>
+     <label>Insert image URL</label>
+     <div class="form-group">
+          <input class="form-control" type="text" placeholder="Insert image URL" name="image">
+     </div>
+   
+     <label>Tell us Your storry</label>
+     <div class="form-group">
+          <textarea  class="form-control" rows=25 name="desc"   >Now it's your time!Be as specific as possible</textarea>
+     </div>
+     <div class="form-group">
+          <input class="btn btn-lg btn-warning btn-block" type="submit">
+     </div>
+                                  
+  <br>
+<a href="/index">Back to CAMPS</a>
+</form>
+
+ 
+
+</div>
+</div>
+
+</div>
+
+<% include ../partials/footer     %>
