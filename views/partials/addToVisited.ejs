@@ -1,0 +1,50 @@
+
+
+<script>
+   
+     const addLocationBtn    =     document.getElementById('addLocationBtn');
+     const visitedCitiesId   =     document.getElementById('visitedCitiesId');
+     const visitedLocation   =     document.getElementById('visitedLocation')   
+     const visitedLocationsTextArea   =     document.getElementById('visitedLocationsTextArea');
+     let allVisitedCitiesArray = [];
+     let allVisitedPlacesArray = [];
+     let allVisitedPlacesNamesArray = [];
+     function addToList(){
+          // Getting visited City value from the search input  
+               city = document.getElementById('visitedLocation').value.split(",")
+               visitedPlace =  document.getElementById('visitedLocation').value
+               if (allVisitedCitiesArray.indexOf(city[1])==-1)  {allVisitedCitiesArray.push(city[1])}
+               if (allVisitedPlacesNamesArray.indexOf(city[0])==-1)  {allVisitedPlacesNamesArray.push(city[0])} 
+          //   Adding city to visited cities list
+               visitedCitiesId.value              =    allVisitedCitiesArray;
+               visitedLocationsNames.value        =    allVisitedPlacesNamesArray;
+          //   combining url to make ajax call to get geocoded data
+               fullAddress = "'"+document.getElementById('visitedLocation').value+"'";
+                    // alert(visitedLocation);
+               let urlToCall= "https://maps.googleapis.com/maps/api/geocode/json?address="+fullAddress+"&key=<%=apiKey%>"
+                    // alert(urlToCall);
+      
+          //   Making ajax request to google geocoder
+               $.ajax ({url: urlToCall ,
+                    dataType:"json",
+                    success: function(response){
+                         resp = response;
+                         console.log(resp)
+                         allVisitedPlacesArray.push({placeName: resp.results[0].formatted_address,
+                                                  lat: resp.results[0].geometry.location.lat,
+                                                  lng: resp.results[0].geometry.location.lng
+                         })
+                         console.log(allVisitedPlacesArray);
+                              visitedLocationsTextArea.value='';
+                         for(i=0;i<allVisitedPlacesArray.length;i++){
+                              visitedLocationsTextArea.value += allVisitedPlacesArray[i].placeName+ "_"  +
+                              allVisitedPlacesArray[i].lat+ "_" + allVisitedPlacesArray[i].lng +"*";
+                         }
+                    }
+               });
+     }
+     addLocationBtn.addEventListener("click",addToList );
+     visitedLocation.addEventListener("click",function(){visitedLocation.value=''});
+
+ 
+   </script>

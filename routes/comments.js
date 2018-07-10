@@ -1,13 +1,13 @@
  var express     = require("express");
  var router  = express.Router({mergeParams: true});
- var YelpModel   = require("../models/campground");
+ var Post   = require("../models/campground");
  var Comment     = require("../models/comment");
  var middleware  = require("../middleware.js")
 //  COMMENTS CREATE ROUTE
 
     router.post("/",middleware.isLoggedIn, function(req,res){
     //    looking for camp by ID
-    YelpModel.findById(req.params.id,function (err,campById) 
+    Post.findById(req.params.id,function (err,campById) 
     {
      if(err) {console.log("Something wrong"), console.log(err);}
      else { //      create new comment 

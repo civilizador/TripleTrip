@@ -1,0 +1,13 @@
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.js'></script>
+<script>
+ const apiKey = 'Lx2iZQSSyPmcnV6LfMzh0Nf6uPz2InZB'
+ const apiRoute = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key='+apiKey
+
+async function searchNearbyPlace(apiRoute) {
+     const response1 = await fetch(apiRoute,{ mode: 'no-cors' })
+    return (await response1.json()).results;
+}
+
+let b =  searchNearbyPlace(apiRoute) 
+ console.log (b)
+</script>

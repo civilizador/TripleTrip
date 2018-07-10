@@ -1,25 +1,33 @@
-<% include ./partials/header     %>
+  <% include ./partials/header     %>
+    <% include ./partials/places %>
 
-
-
-<div class="container">
+<div class='wrapperForLogin'>  
+  
+        <div id='logoPhoto'>
+            <img width='100%' src='logoLg.png' >
+        </div>
+        
+        
+        <div  id='loginForm'>
+          
+            <form id='loginFormInside' action="/login" method="POST"  class="ui form">
+                <div   class="form-group">
+                    <label>User Name</label>
+                    <input type="text" name="username" placeholder="Username">
+                </div>
+                
+                <div     class="form-group">
+                    <label>Password</label>
+                    <input type="text" name="password" placeholder="Password">
+                </div>
     
-    <form action="/login" method="POST" style="width: 80 %;" class="ui form">
-  <div class="field">
-    <label>User Name</label>
-    <input type="text" name="username" placeholder="Username">
-  </div>
-  <div class="field">
-    <label>Password</label>
-    <input type="text" name="password" placeholder="Password">
-  </div>
-      <button class="ui button" type="submit">Submit</button>
-    </form>
-    
+                <button class="ui button" type="submit">Submit</button>
+            </form>
+            
+        </div>
+  
 </div>
 
 
 
-
-
-<% include ./partials/footer %>
+ <% include ./partials/footer %>

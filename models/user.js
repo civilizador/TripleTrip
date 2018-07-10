@@ -11,6 +11,8 @@ var UserSchema = new mongoose.Schema({
     homeCountry:String,
     homeCity:String,
     countryCode: String,
+    facebookURL: String,
+    twitterURL: String,
     numOfPosts: {Number,default:0},
     rating: {Number,default:0},
     citiesVisited: {

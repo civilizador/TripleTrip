@@ -6,30 +6,72 @@
 <div class="row">
 
 <div class="submitform">
-<form action="/index/<%= foundPost._id %>?_method=PUT" method="POST">
-    
-      <div class="form-group">
-        <input class="form-control" type="text"  name="campground[name]" value=<%=foundPost.name%> >
+     
+     <form action="/index/<%= foundPost._id %>?_method=PUT" method="POST">
+          
+          <div class="form-group">
+          Title:    <input class="form-control" type="text"  name="campground[name]" value='<%=foundPost.name%>' >
           </div>
-              <div class="form-group">
-                <input class="form-control" required type="number" name="campground[price]" value=<%=foundPost.price%> >
-                    </div>
-              <div class="form-group">
-                <input class="form-control" type="text" placeholder="Insert image URL" name="campground[image]" value=<%=foundPost.image%>>
-                    </div>
-                         <div class="form-group">
-                           <textarea name="campground[desc]" rows="10" cols="50"  ><%=foundPost.desc%></textarea>
-                                </div>
-                            <div class="form-group">
-                                <input class="btn btn-lg btn-warning btn-block" type="submit">
-                                     </div>  
-</form>
+     
+          <div class="form-group">
+          Price     <input class="form-control" required type="number" name="campground[price]" value='<%=foundPost.price%>' >
+          </div>
+          
+          <div class="form-group">
+          Region     
+          <select  class="form-control" default='asia' name='campground[region]'>
+                    <option>asia</option>
+                    <option>europe</option>
+                    <option>australia</option>
+                    <option>america</option>
+          </select>
+          </div>
+          
+           <div class="form-group">
+          Sub Region     
+          <input  class="form-control" default='asia' name='campground[subregion]'>
+                 
+          </input>
+          </div>
+          
+          <div class="form-group">
+          Is it single or multi trip
+               <select  class="form-control" default='single country' name='typeOfTrip'>
+                    <option>single-country</option>
+                    <option>double-trip</option>
+                    <option>triple-trip</option>
+                    <option>3+</option>
+               </select>
+          </div>
+     
+          <div class="form-group">
+          Image URL: <input class="form-control" type="text" placeholder="Insert image URL" name="campground[image]" value=<%=foundPost.image%> >
+          </div>
+     
+          <div class="form-group">
+          <label>Post: </label> <br> <textarea name="campground[desc]" rows="10" cols="50"> <%=foundPost.desc%></textarea>
+          </div>
+     
+          <div class="form-group">
+          <label>Try to avoid: </label> <br> <textarea name="campground[avoid]" rows="10" cols="50"> <%=foundPost.avoid%></textarea>
+          </div>
+     
+          <div class="form-group">
+          <label>Tips: </label><br> <textarea name="campground[tips]" rows="10" cols="50"> <%=foundPost.tips%></textarea>
+          </div>
+          
+    
+          <div class="form-group">
+               <input class="btn btn-lg btn-warning btn-block" type="submit">
+          </div> 
+     
+     </form>
 
-          <form action="/index/<%= foundPost._id %>?_method=DELETE" method="POST">  
-            <div class="form-group">
-                <button class="btn btn-lg btn-danger btn-block" > DELETE POST </button>
-            </div>
-        </form>
+     <form action="/index/<%= foundPost._id %>?_method=DELETE" method="POST">  
+          <div class="form-group">
+               <button class="btn btn-lg btn-danger btn-block" > DELETE POST </button>
+          </div>
+     </form>
 </div>
 </div>
 <a href="/index"> Back to CAMPS </a>

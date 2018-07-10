@@ -1,4 +1,4 @@
-var YelpModel = require("./models/campground");
+var Post = require("./models/campground");
 var Comment = require("./models/comment");
 
 var middlewareObj={};
@@ -7,7 +7,7 @@ middlewareObj.checkOwnership = function ( req, res, next )
 { 
     if(req.isAuthenticated()) 
     {
-        YelpModel.findById(req.params.id, function(err, foundCampground)
+        Post.findById(req.params.id, function(err, foundCampground)
             {   if(err) {
                req.flash("error", "Campground not found");
                res.redirect("back");}

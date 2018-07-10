@@ -1,92 +1,475 @@
-
-<% include ../partials/header %>
-<div class="container showpage">
-    
-     <div  class="row">
-          <div class="col-md-3">
-          <p class="lead">Map</p>
-          <div class="list-group">
-                <li>Info1</li>
-                <li>Info2</li>
-                <li>Info3</li>
-          </div>
-     </div>
-            
-     <div class="col-md-9">
-          <div class="img-thumbnail">
-          <div>
-               <h1 style="display: inline"><%= campDesc.name %></h1> <span class="pull-right btn btn-sl btn-warning">$<%= campDesc.price %> Per day</span>
-          </div>
-          <div class="img-thumbnail"> 
-               <img  class="img-responsive"  src="<%= campDesc.image %>" > 
-          </div>
-          <div> 
-          <h3><a href="/">  <%=  campDesc.name  %> </a> 
-          <span> 
-          <%if(currentUser && campDesc.author.id.equals(currentUser._id)){ %>
-               <a class="btn btn-xs btn-warning" href="/index/<%= campDesc._id %>/edit"> Edit</a> 
-          <% } %>
-          </span>
-          </h3><p><em>Submitted by: <a href="/user/<%= campDesc.author.id%>"> <%= campDesc.author.username %> </a>, <%= moment(campDesc.created).fromNow() %></em> </p>                       
-               <p>   <%=  campDesc.desc %> </p> 
-               <p> Submitted by: <%=  campDesc.author.username  %> </p>
-          </div>            
-     </div>
-            
-   
-            <hr>
-             
+<% include ../partials/headerForIndex %>
+ 
+  	<style>
+  	body{margin: 0; padding:0;}
+ 	
+ 	#mapCanvas1 {
+        width: 100%;
+        height: 40vh;
+        color: gray;
         
-                      <!-- Add new comment form-->
-                           <!--NEW COMMENTS FEED-->
-  
-<div class="ui comments">
-  <h3 class="ui dividing header">Comments</h3>
-  <!--Printing Comments -->
-        <% campDesc.comments.forEach(function(comments){%>
-    <div class="comment">
-        <a class="avatar"> <img src="https://www.powerkiteshop.com/images/productimages/surf/wainmanpassport2012.jpg"> </a>
-    <div class="content">
-        <a class="author"><%= comments.author.username %></a>
-      <div class="metadata">
-        <div class="date"><span class="pull-right"><%= moment(comments.created).fromNow() %></span>
-</div>
-      </div>
-      <div class="text">
-        <h4><%= comments.text %></h4>
-      </div>
-    </div>  
-              
-                <div style="display: none;" class="col-md-12"> 
-                    <a class="btn btn-info" href="/index/<%= campDesc._id %>/comments/<%=comments._id %>/edit">Edit</a>
-                    <br>
-                </div>  
-                   
-                <% })%>
-   
-        <form class="ui reply form" action="/index/<%=campDesc._id%>/comments" method="POST">
-                  
-                <br>  
-                    <div  class="field">
-                       <textarea style="width: 80%;" rows="12" name="comment[text]" > Start writing your comments here</textarea>
-                    </div>
-                    
-                    <div  class="field">
-                      <button class="ui primary submit labeled icon button" >  <i class="icon edit"></i>Submitt</button>
-                    </div>
-        </form>
-    </div>
-  </div>
-</div>
-    </div>
- </div>
+    }  
     
-    </div>  
-</div>
+    #demo1{margin-top: 20px;}
+    
+    .carousel-inner img {
+        width: 100%;
+        height: 100%;
+        margin: 0; padding:0;
+    }
+    .carousel-inner { 
+        top:-60px; left:0px;}
+    
+ 	</style>
+ 	
+ 	            
+ 	            
+ 	  
+ 	<% var placesArray = [] ;%>
+        	 <% var nameArray = [] ;%>
+        	 <% var NewNameArray = [] ;%>
+        	 <% coordArray = [] ;%>
+        	 <% var obj = []; %>
+       		 <% var foundUser2=posts.country.toLowerCase()%>
+     		 
+     		<% foundPlace = posts.places %>
+     		<% foundPlace1 = foundPlace.split('*') %>
+     		<% var Cities=posts.cities%>
+     		<%  allCities = Cities[0].split(",") %>
+     		
+     	
+     		<!--Pushing visited places names and coordinates into array-->
+            <% for(i=0;i< foundPlace1.length;i++) { %>   
+                <% nameArray.push(foundPlace1[i].split("_"))%>
+            <% } %>
+            <!--Creating an array of objects. Each object will ahve name lat an lng-->
+            
+          <br>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    	<script type="text/javascript" src="https://www.amcharts.com/lib/3/ammap.js"></script>
+		<script type="text/javascript" src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
+		<script type="text/javascript" src="https://www.amcharts.com/lib/3/ammap.js"></script>
+		<script type="text/javascript" src="https://www.amcharts.com/lib/3/maps/js/<%=foundUser2%>Low.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQoVF1uACfK40haSfi-ZxKGTEINtmQOpE"></script>
+
+    <div  class="row">
+     
+        <div style='background-color: white;  width:100%; height:108vh;' class="col-lg-12">
+            <!--CAROUSEL-->
+            
+            <div id="demo1" class="carousel slide carousel-fade" data-ride="carousel">
+        
+                  <!--Indicators -->
+                  <ul style='position:absolute; top: 85vh; left:0;' class="carousel-indicators">
+                      
+                    <li data-target="#demo1" data-slide-to="0" class="active"></li>
+                    <li data-target="#demo1" data-slide-to="1"></li>
+                    <li data-target="#demo1" data-slide-to="2"></li>
+                    <li data-target="#demo1" data-slide-to="3"></li>
+                  </ul>
+        
+    <!--The slideshow -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img src="<%= posts.images[0] %>">
+                    </div>
+        
+                    <% posts.images.forEach(function(imageSrc){ %>
+                        <div class="carousel-item">
+                            <img src="<%= imageSrc %>" >
+                        </div>
+                    <% }); %>
+                </div>      
+    <!--Left and right controls -->
+                <a class="carousel-control-prev" href="#demo1" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                 </a>
+                <a class="carousel-control-next" href="#demo1" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                 </a>
+            
+            </div>
+                <% include ../partials/follow_up %>
+        </div> 
+    <!--End of Carousel-->
+    
+        <div class="col-lg-12 detailsDivOnShowPage">
+                <div class='container'>
+                    <div  class="row">
+                        
+                        <div class="col-lg-6 shortDetailsDivOnShowPage">
+                           <h3>Quick Trip Overview<span class="btn btn-lg btn-info pull-right"><%= posts.tripLength %> Days in trip</span> </h3> <hr>
+                            <h2 style="display: inline"><%= posts.name %></h2> 
+                            <span> 
+                                <%if(currentUser && posts.author.id.equals(currentUser._id)){ %>
+                                    <a class="btn btn-xs btn-warning pull-right" href="/index/<%= posts._id %>/edit"> Edit</a> 
+                                <% } %>
+                            </span>
+                             
+                               <p><em>Submitted by: <a href="/user/<%= posts.author.id%>"> <%= posts.author.username %> </a>, <%= moment(posts.created).fromNow() %></em> </p>                       
+                                    
+                                                        <%if(currentUser){ %>
+                                                                <button type="button" class="btn btn-primary fa fa-thumbs-up" onclick="actOnPost(event);"
+                                                                    id="<%=posts._id%>"> <%= posts.likedByUsers.indexOf(currentUser._id) === -1 ? 'Like' : 'Unlike' %>
+                                                                </button>
+                                                        <% } %>
+                                                        <button type="button" class="btn btn-lg btn-primary">
+                                                            Likes : <span id='likes-count-<%=posts._id%>' class='badge badge-light likesCounterSpan'> <%= posts.likedByUsers.length %></span>
+                                                        </button>
+                            <!--VISITED CITIES-->
+                             <hr>
+                             <h4>Cities Visited during the Trip</h4>
+                             	<!--Printing all visited Cities-->
+                             	<div class='row'>
+                             		<% for(i=0;i< allCities.length;i++) { %>   
+                             		   <div class='col-lg-4 col-md-4 col-sm-6 col-lg-4 cityCard'><a href="https://en.wikipedia.org/wiki/<%= allCities[i] %>"> <%= allCities[i] %> </a> </div>
+                             		<% } %>
+                             	</div>	
+                             <%=  posts.placesNames %>
+                            <!--VISITED PLACES-->
+                            <h4>Visited Places map:</h4>
+                            <%=posts.visitedLocationsNames%>
+                                    <div id="mapCanvas1"></div>
+                                 
+                                <% obj = []; %>
+                            	
+                             <% for(i=0;i< nameArray.length;i++) { %>
+                                <% obj.push({Name: nameArray[i][0], Lat: nameArray[i][1], Lng: nameArray[i][2] }) %>
+                            <% } %>
+                             <script>
+   
+        function initMap() {
+            var map;
+            var bounds = new google.maps.LatLngBounds();
+            var mapOptions = {
+                mapTypeId: 'roadmap'
+            };
+                    
+    // Display a map on the web page
+    map = new google.maps.Map(document.getElementById("mapCanvas1"), mapOptions);
+    map.setTilt(50);
+        
+    // Multiple markers location, latitude, and longitude
+    var markers = [
+        ['<%= nameArray[0][0] %>', <%= nameArray[0][1] %>, <%= nameArray[0][2] %>],
+        ['<%= nameArray[1][0] %>', <%= nameArray[1][1] %>, <%= nameArray[1][2] %>],
+        ['<%= nameArray[2][0] %>', <%= nameArray[2][1] %>, <%= nameArray[2][2] %>],
+      ];
+                        
+    // Info window content
+    var infoWindowContent = [
+        ['<div class="info_content">' +
+        '<h4><%= nameArray[0][0].substring(0,25)+"..."  %></h4>' +
+        '<p><%= nameArray[0][0].substring(0,75) %></p>' + '</div>'],
+        ['<div class="info_content">' +
+        '<h4><%= nameArray[1][0].substring(0,25)+"..." %></h4>' +
+        '<p><%= nameArray[1][0].substring(0,75) %></p>' +
+        '</div>'],
+        ['<div class="info_content">' +
+        '<h4><%= nameArray[2][0].substring(0,25)+"..." %></h4>' +
+        '<p><%= nameArray[2][0].substring(0,75) %></p>' +
+        '</div>'],
+       
+    ];
+        
+    // Add multiple markers to map
+    var infoWindow = new google.maps.InfoWindow(), marker, i;
+    
+    // Place each marker on the map  
+    for( i = 0; i < markers.length; i++ ) {
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: markers[i][0]
+        });
+        
+        // Add info window to marker    
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infoWindow.setContent(infoWindowContent[i][0]);
+                infoWindow.open(map, marker);
+            }
+        })(marker, i));
+
+        // Center the map to fit all markers on the screen
+        map.fitBounds(bounds);
+    }
+
+    // Set zoom level
+    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(8);
+        google.maps.event.removeListener(boundsListener);
+    });
+    
+}
 
 
+// Load initialize function
+google.maps.event.addDomListener(window, 'load', initMap);
+</script>
+                           
+                        </div>
+                        
+                            <!-- VISITED COUNTRY MAP -->
+                                
+                        <div class="col-lg-6">
+                            <div  class="col-lg-12" id="map1" style="width: 100%; border: 5px ridge rgba(212,175,55,0.5); height: 350px;"></div>
+	                            <% include ../partials/showPageHomeCountryMap %>
+	                                <h3 class="pull-right"> <a href="/index/showCountry/<%=  posts.country  %>">  <%=  posts.country  %> </a>  </h3>
+	                                <br>
+	                                <div> <img id='flag' src='' /></div>
+	                                <hr>
+                                    <h4>tags 
+                                            <a class="badge badge-secondary" href="/index/showByRegion/<%=  posts.region  %>" >  <%= posts.region %>  </a>
+                                            <a class="badge badge-secondary" href="/index/showByRegion/<%=  posts.subregion %>"> <%= posts.subregion %> </a>
+                                            <a class="badge badge-primary  " href="/index/showByRegion/<%=  posts.typeOfTrip %>"> <%= posts.typeOfTrip %> </a>
+                                            <span class="pull-right btn btn-sl btn-warning">$<%= posts.price %> Per day</span>
+                                    </h4>
+                                    <hr>
+                                    
+                            <!-- COUNTRY DETAILS -->       
+                                                <ul  style='color: silver; border: 5px ridge silver; border-radius: 25px;' class="list-group">
+                                                    
+                                                      <li style='border-radius: 25px; font-size: 1.2em;' class="list-group-item">
+                                                           Country Name: <span class="badge badge-warning pull-right"><input class='trasparentInput'  id="countryName">  </span>
+                                                      </li>
+                                                      <li style='border-radius: 25px; font-size: 1.2em;' class="list-group-item">
+                                                            Capital:<span class="badge badge-info pull-right"> <input class='trasparentInput'  id="capital">  </span>
+                                                      </li>
+                                                      <li  style='border-radius: 25px; font-size: 1.2em;' class="list-group-item">
+                                                            Region: <span class="badge badge-info pull-right"> <input class='trasparentInput'   id="region">  </span>
+                                                      </li>
+                                                      <li style='border-radius: 25px; font-size: 1.2em;' class="list-group-item">
+                                                            Sub-Region:<span class="badge badge-info pull-right"> <input class='trasparentInput'   id="subregion">  </span>
+                                                      </li>
+                                                      <li style='border-radius: 25px; font-size: 1.2em;' class="list-group-item">
+                                                            Population: <span class="badge badge-info pull-right"> <input class='trasparentInput'   id="population">  </span>
+                                                      </li>
+                                                      <li style='border-radius: 25px; font-size: 1.2em;' class="list-group-item">
+                                                            Language:<span class="badge badge-info pull-right"> <input class='trasparentInput'   id="languages">  </span>
+                                                      </li>
+                                                       
+                                                </ul>
+	                                              
+                                                
+	                        </div>
+                        </div>
+                        
+                    </div>    
+        </div>
+        
+                    <div class="col-lg-12 descriptionDivOnShowPage">
+                        <img src='<%-posts.images[2]%>' class='additionalImages'>
+                        </div>
+                        
+                        
+                    <!-- DESCRIPTION -->
+                    <div   class="col-lg-12 descriptionDivOnShowPage">
+                             <div class='row'>
+                                <div class="col-lg-6">
+                                    <h3 style="border-left:7px ridge rgba(212,175,55,0.5); padding-left: 15px; color:gray; padding-top:15px; padding-bottom:15px; margin-left:5%;"><%= posts.desc %>  </h3>
+                                </div>
+                                <div class="col-lg-6">
+                                    
+                                    <div class='imageFrameShowPage'>
+                                        <%if(currentUser){ %>
+                                                <i type="button"  data-toggle="modal" data-target="#uploadModal"    class="fa fa-upload uploadImagesPost pull-right"></i>
+                                            <% } %>
+                                        <image class='roundedBorder' src='<%-posts.images[0]%>'>
+                                    </div>
+                                       
+    
+                                    <div class='imageFrameShowPage'>
+                                        <img class='roundedBorder' src='<%-posts.images[1]%>'/> 
+                                    </div>
+                                        
+                                        
+                                    <!-- Modal -->
+                    				<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    				  <div class="modal-dialog" role="document">
+                    				    <div class="modal-content">
+                    				      <div class="modal-header">
+                    				        <h5 class="modal-title" id="exampleModalLabel">Upload Images</h5>
+                    				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    				          <span aria-hidden="true">&times;</span>
+                    				        </button>
+                    				      </div>
+                    				      <div class="modal-body">
+                    				       Upload up to 5 Images
+                    				       <form action="/index/<%=posts.id%>/upload" enctype="multipart/form-data" method="POST"> 
+                    				             <input  class="btn btn-secondary"  type="file" name="photos" multiple/>
+                    				             <input type="submit" value="Upload Photo"/>
+                    				        </form>
+                    				        
+                    				      </div>
+                    				      <div class="modal-footer">
+                    				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     				      </div>
+                    				    </div>
+                    				  </div>
+                    				</div>  
+                    				<!--Modal End-->
+                                    
+                                </div>
+                            
+                            </div>
+                        </div>   
+                        
+                        <div class="col-lg-12 descriptionDivOnShowPage">
+                            <img src='<%-posts.images[3]%>' class='additionalImages'>
+                        </div>
+                        
+                        <!--ADDITIONAL FIELDS and TRY to AVOID-->
+                        
+                        <div class="col-lg-12 descriptionDivOnShowPage">
+                                <div class="media">
+                                      <div class="media-body">
+                                        <h2 style="color: white" class="mt-0 mb-1">Try to Avoid </h2>
+                                        <hr style="color: white; border:3px solid white; margin-right: 5px;">
+                                         <h3 style="border-left:7px ridge rgba(212,175,55,0.5); padding-left: 15px; color:gray; padding-top:15px; padding-bottom:15px;">
+                                            <p class='lineBraker'>   <%= posts.avoid %> </p> 
+                                         </h3>
+                                       </div>
+                                        <div class='quote pull-right'>
+                                                  <%= posts.additional[0] %>
+                                            </div>
+                                </div>
+                                
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h2 style="color: white" class="mt-0 mb-1">Tips</h2>
+                                        <hr>
+                                            <h3 style="border-left:7px ridge rgba(212,175,55,0.5); padding-left: 15px; color:gray; padding-top:15px; padding-bottom:15px;">
+                                                <p class='lineBraker'>   <%= posts.tips %> </p>
+                                            </h3>
+                                    </div>
+                                        <div class='quote pull-right'>
+                                                  <%= posts.additional[1] %>
+                                            </div>
+                                </div>
+                        </div> 
+                          
+                        
+                    <div class="col-lg-12 descriptionDivOnShowPage">
+                            <img src='<%-posts.images[4]%>' class='additionalImages'>
+                        </div>
+                        
+                        
+                     <!--COMMENTS FEED-->
+                     
+                    <div class="col-lg-12 commentsDivOnShowPage">
+ 
+                        <div class='container'>            
+                        <div class="ui comments">
+                            <br>
+                            <h2 class="ui dividing header">Comments</h2>
+                            
+                            <!--Printing Comments -->
+                            
+                            <% posts.comments.forEach(function(comments){%>
+                                <div class="comment">
+                                    <a class="avatar"> <img src="https://www.powerkiteshop.com/images/productimages/surf/wainmanpassport2012.jpg"> </a>
+                                    <div class="content">
+                                         <a class="author"><%= comments.author.username %></a>
+                                            <div class="metadata">
+                                                <div class="date"><span class="pull-right"><%= moment(comments.created).fromNow() %></span>
+                                                </div>
+                                            </div>
+                                            <div class="text">
+                                                <h4><%= comments.text %></h4>
+                                            </div>
+                                    </div>  
+                                            <div style="display: none;" class="col-md-12"> 
+                                                <a class="btn btn-info" href="/index/<%= posts._id %>/comments/<%=comments._id %>/edit">Edit</a>
+                                                <br>
+                                            </div>  
+                                    <% })%>
+                   
+                                            <form class="ui reply form" action="/index/<%=posts._id%>/comments" method="POST">
+                                                <br>  
+                                                <div  class="field">
+                                                    <textarea style="width: 80%;" rows="12" name="comment[text]" > Start writing your comments here</textarea>
+                                                </div>
+                                                <div  class="field">
+                                                    <button class="ui primary submit labeled icon button" >  <i class="icon edit"></i>Submit</button>
+                                                </div>
+                                            </form>
+                                                      
+                            
+                                </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+                
+   
+    <!--LIKES LOGIC-->
 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+        
+        var updatePostStats = {
+            
+            Like: function (postId) {
+                document.querySelector('#likes-count-<%=posts._id%>').textContent++
+            },
+            Unlike: function(postId) {
+                document.querySelector('#likes-count-<%=posts._id%>').textContent--
+            }
+        };
+        var toggleButtonText = {
+            Like: function(button) {
+                button.textContent = "Unlike";
+            },
+            Unlike: function(button) {
+                button.textContent = "Like";
+            }
+        };
+            var actOnPost = function (event) {
+            var action = event.target.textContent.trim();
+            toggleButtonText[action](event.target);
+            updatePostStats[action](<%posts._id%>);
+            axios.post('/index/<%=posts._id%>/act', { action: action });
+        };
+        
+    </script>
+ 
+   
+<script>
+ <% var currentCountry  =  posts.countryCode %>
+ 
+       let capital = document.getElementById('capital');
+       let countryName = document.getElementById('countryName');
+       let subregion = document.getElementById('subregion');
+       let population = document.getElementById('population') ;
+       let region =  document.getElementById('region') ;
+       let languages = document.getElementById('languages') ; 
 
-         
+    $.ajax ({url: "https://restcountries.eu/rest/v2/alpha/<%=currentCountry%>",
+               dataType:"json",
+               success: function(response){
+               resp = response;
+               console.log(resp)
+               countryName.value=resp.name;
+               capital.value=resp.capital;
+               population.value = resp.population;
+               subregion.value = resp.subregion;
+               region.value = resp.region;
+               let lat = resp.latlng[0];
+               let lng = resp.latlng[1];
+               languages.value = resp.languages[0].name
+               let  currentCountryCode=resp.alpha2Code.toLowerCase();
+ 
+                console.log(flag.src);
 
+                }
+          });
+</script>
+    
 <% include ../partials/footer %>
+
+
+
+

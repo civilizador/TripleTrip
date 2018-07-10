@@ -1,4 +1,12 @@
- 
+ .navbar-custom {position: absolute;
+		top:0;
+		left:0;
+		background-color: none;
+		color: white;
+		float:right;
+		font-size: 20px;
+		z-index: 4} 
+		
 #landing-header {
     /*z index will bring our header to the fron layer. It's neccessary to have fade in and fade out for our images while header always stays on top of all images */
   z-index: 1;
@@ -77,3 +85,5 @@
 .no-cssanimations .slideshow li {
 	opacity: 1;
 }
+
+ 

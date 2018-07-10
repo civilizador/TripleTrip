@@ -1,0 +1,58 @@
+ <% include ../partials/headerForIndex %>
+ 
+  <style>
+     input{  text-transform: lowercase;}
+     select{  text-transform: lowercase;}
+     #buffer {height: 150px;
+               width: 100%;
+     }
+  </style>
+  <div id='buffer'></div>
+  <div class='container'>
+     <select id='regionSelect'> 
+          <% allTags.forEach(function(all){ %>
+               <option><%= all.branchName %></option> 
+          <% }) %>
+     </select> 
+     
+     
+    
+     <select  id='subRegionSelect'> 
+     </select>   
+ <button id='filterButton'>filter</button>
+
+ 
+     <script>
+          const allposts = <%- JSON.stringify(allposts) %>  
+          const regions = <%-JSON.stringify(currentRegion)%>
+          document.getElementById('regionSelect').addEventListener("change", function() {
+               document.getElementById('subRegionSelect').innerHTML = "";
+               var selectedIndex = document.getElementById('regionSelect').selectedIndex;
+               regions[selectedIndex].forEach(function(regionParts){  
+                    document.getElementById('subRegionSelect').innerHTML += "<option>"+regionParts+"</option>";
+               } ) 
+          })
+     </script>
+     
+     
+     <script>
+          document.getElementById('filterButton').addEventListener("click", function() {
+               allposts.forEach(function(post){  
+                    //if(post.subregion==document.getElementById('subRegionSelect').value)
+                    {alert(post.subregion)}
+               } ) 
+          })   
+     </script>
+     
+          
+               <h4>Add Categories</h4>
+ 
+                <form action="/index/categories/create" method='post'>
+                    Name of the category:<input type='text' placeholder='New branch name' name='branchName'>
+                    Values of the category:<input type='text' placeholder='New tag name' name='tags'>
+                    <input type='submit'>
+     </form>
+     
+    </div> 
+
+<% include ../partials/footer %>

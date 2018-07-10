@@ -1,7 +1,13 @@
+ <% let visited1=foundUser.countriesVisited[0].substring(2,foundUser.countriesVisited[0].length-2).split('","') %> 
  <% include ../partials/header %>
  
-
-<div class="container">
+ <span id="positionStatic" class='btn btn-md btn-warning'>Editing <%=foundUser.first%>'s  Profile</span>
+   
+      <% include ../partials/registerNewUserMap %>    
+    
+   
+ 
+  <div class="container">
     
   <form action="/user/<%=foundUser._id%>?_method=PUT" method="POST" style="width: 80%;" class="ui form">
     <div class="field">
@@ -39,7 +45,12 @@
       <label>Password</label>
       <input value='' type="text" name="userDet[password]" placeholder="password">
     </div>
-    
+    <div class="field customField">
+      <label>Social Media</label>
+      <span class="btn facebook"><i class="fa fa-facebook"></i> <input  value='<%=foundUser.facebookURL%>' type="text" name="userDet[facebookURL]" placeholder="facebook profile URL"></span>
+            <span class="btn twitter"><i class="fa fa-twitter"></i> <input value='<%=foundUser.twitterURL%>' type="text" name="userDet[twitterURL]" placeholder="twitter profile URL"></span>
+
+    </div>
     <div class="field">
       <label>Avatar</label>
       <input value='<%=foundUser.avatar%>' type="text" name="userDet[avatar]" placeholder="insert URL to your avatar">
@@ -50,7 +61,7 @@
     </div>
    <div class="field">
       <label>Visited Countries</label>
-      <input value='<%=foundUser.countriesVisited%>' type="text" name="userDet[countriesVisited]" placeholder="insert URL to your avatar">
+      <input id="countriesVisited" value='<%=foundUser.countriesVisited[0]%>' type="text" name="userDet[countriesVisited]" placeholder="insert URL to your avatar">
     </div>
     <div class="field">
       <div>
@@ -63,9 +74,7 @@
   
   </form>
     
-</div>
-
-
-
+  </div>
+ 
  
  <% include ../partials/footer %>

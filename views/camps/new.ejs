@@ -1,124 +1,165 @@
-<% include ../partials/header %>
-
-<!--MAP-->
-
-<!-- Styles -->
-<style>
-#chartdiv {
-  width: 70%;
-  height: 400px;
-}
-</style>
-
-<!-- Resources -->
-<script src="https://www.amcharts.com/lib/3/ammap.js"></script>
-<script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
-
-<!-- Chart code -->
-<script>
-let clicked = false;
-  map = AmCharts.makeChart("chartdiv", { 
-  "type": "map",
-  "theme": "dark",
-  "projection": "eckert3",
-  "dataProvider": {
-    "map": "worldLow",
-    "getAreasFromMap": true
-  },
-  "areasSettings": {
-    "selectedColor": "rgb(79, 46, 22, 0.75)",
-    "selectable": true,
-    "autoZoom": true,
-  },
-   
-  "listeners": [{
-    "event": "clickMapObject",
-    "method": function(e) {
-         clicked=true;
-        if (e.mapObject.objectType !== "MapArea")
-        return;
-        var area = e.mapObject;
-        area.showAsSelected = !area.showAsSelected;
-        e.chart.returnInitialColor(area);
-        // making ajax call to get capital of the country  
-        document.getElementById("countryInput").value = getSelectedCountries();
-        
-        
-          function getSelectedCountries() {
-  var selected;
-    
-  for(var i = 0; i < map.dataProvider.areas.length; i++) {
-    if(map.dataProvider.areas[i].showAsSelected)
-      selected=map.dataProvider.areas[i].enTitle;
-      
-  }
-  return selected;
-}
-     } 
-   }]
- });
-</script>
-
-<!-- HTML -->
-<div id="chartdiv"></div>
-
-<!--END of MAP-->
-
-
-<div class="container">
-<h1 id="submith1">Create a new Post</h1>
-
-<div class="row">
-
-<div class="submitform">
-<form  action="/index" method="POST">
-     <label>Title</label>
-     <div class="form-group">
-          <input class="form-control" type="text" placeholder="Title" name="name">
-     </div>
-     <label>Country</label>
-     <div class="form-group">
-          <input id="countryInput" class="form-control" type="text" placeholder="Select country that You visited" name="country">
-     </div>
-     <div class="form-group">
-    <label for="exampleFormControlSelect2">Select cities that you visited</label>
-    <select multiple class="form-control" id="exampleFormControlSelect2">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-    </select>
-  </div>
-     <label>Average daily expense</label>
-     <div class="form-group">
-          <input class="form-control" type="text" placeholder="Average daily expense" name="price">
-     </div>
-     <label>Insert image URL</label>
-     <div class="form-group">
-          <input class="form-control" type="text" placeholder="Insert image URL" name="image">
-     </div>
-   
-     <label>Tell us Your storry</label>
-     <div class="form-group">
-          <textarea  class="form-control" rows=25 name="desc"   >Now it's your time!Be as specific as possible</textarea>
-     </div>
-     <div class="form-group">
-          <input class="btn btn-lg btn-warning btn-block" type="submit">
-     </div>
-                                  
-  <br>
-<a href="/index">Back to CAMPS</a>
-</form>
-
+    <br><br>
+     
+<iframe class="editIframe"  src="https://www.youtube.com/embed/4D0hT44D9Jw?autoplay=1&controls=0&loop=1&mute=1&list=PLQmom3TCTIdx5OnTUTOw5hl_4qCTYFqQA;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+</iframe>
  
+    <% include ../partials/header %>
+     <!-- Resources -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+    <script src="https://www.amcharts.com/lib/3/ammap.js"></script>
+    <script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <center><h2 class='whiteFont'>Please, select visited country</h2></center>
+    <!--MAP-->
+    <div class='nondisabledbutton' id="chartdiv"></div>
+    <!--MAP-->
 
-</div>
-</div>
+    <h1 id="submith1">Share Your experience</h1>
+    
+        <div class="row">
+            
+            <div class = 'col-lg-12 col-md-12 col-sm-12'> 
+            
+                <div class="submitform">
+                    <form action="/index" method="POST">
+                        
+                        <label>Title</label>
+                            <div class="form-group">
+                                <input required class="form-control" type="text" placeholder="Title" name="name">
+                            </div>
+                        <hr>    
+                        
+                        <h4>Country Information</h4> 
+                        
+                        <label>Country</label>
+                            <div class="form-group">
+                                <input required id="countryInput" class="form-control" type="text" placeholder="Select country that You visited" name="country">
+                            </div>
+                             
+                            <input required id='capitalInput' class="form-control" type="hidden" placeholder="" name="capital">
+                            <input required id='latInput' class="form-control" type="hidden" placeholder="" name="lat">
+                            <input required id='lngInput' class="form-control" type="hidden" placeholder="" name="lng">
+    
+                        <label>Region</label>
+                            <div class="form-group">
+                                <input required id="regionInput" class="form-control nondisabledbutton" type="text" placeholder="Region" name="region">
+                            </div>
+                            
+                        <label>Sub Region</label>
+                            <div class="form-group">
+                                <input required id="subRegionInput" class="form-control nondisabledbutton" type="text" placeholder="Sub Region" name="subregion">
+                            </div>
+                            
+                        <label>Country Short Code</label>
+                            <div class="form-group">
+                                <input required id="countryCode" class="form-control nondisabledbutton" type="text" placeholder="Country Short code. Leave default" name="countryCode">
+                            </div>
+                        <label>How many days was your trip</label>
+                            <div class="form-group">
+                                <input required id="tripLength" class="form-control" rows=5 name="tripLength"></input>
+                            </div>      
+                       
+                        <label> Type of Trip  </label>     
+                            <select class="form-control"  name='typeOfTrip'>
+                                <% for (i=0;i<typeOfTripArray.length;i++){%>
+                                 <option><%=typeOfTripArray[i]%></option>
+                                <% }%>
+                            </select> 
+                             <hr>
+                        <h4>Add locations You have stayed  or visited</h4>
+                                
+                            <div class="input-group">
+                                
+                                <input id='visitedLocation' name='visitedLocation' type="text" class="form-control" value="Ex: hotel Plaza, New York" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button id='addLocationBtn' class="btn btn-info" type="button">Add!</button>
+                                </span>
+                            </div> 
+                         <label>Visited locations</label>
+                            <div  class="form-group">
+                                <textarea required  id="visitedLocationsNames" class="form-control nondisabledbutton" rows=5 name="visitedLocationsNames"></textarea>
+                            </div>       
+                        <label>Visited locations full Address</label>
+                            <div  class="form-group">
+                                <textarea type="hidden"  required  id="visitedLocationsTextArea" class="form-control nondisabledbutton" rows=5 name="places"></textarea>
+                            </div>      
+                            
+                        <label>Visited cities</label>
+                            <div class="form-group">
+                                <textarea   required id="visitedCitiesId" class="form-control nondisabledbutton" rows=5 name="cities"></textarea>
+                            </div>        
+                            
+                            
+                        <label>Average daily expense</label>
+                            <div class="form-group">
+                                <input required class="form-control" type="text" placeholder="Average daily expense" name="price">
+                            </div>
+                            
+                        <!--<label>Insert image URL</label>-->
+                        <!--    <div class="form-group">-->
+                        <!--        <input required class="form-control" type="text" placeholder="Insert image URL" name="image">-->
+                        <!--    </div>-->
+       
+                        <label>Tell us Your story</label>
+                            <div class="form-group">
+                                <textarea required class="form-control" rows=10 name="desc">Now it's your time!Be as specific as possible</textarea>
+                            </div>
+                            
+                        <label>Tips</label>
+                            <div class="form-group">
+                                <textarea required class="form-control"   name="tips">Here you can share your favorite secret locations and unknown parts of the city.</textarea>
+                            </div>
+                        <label>Try to avoid</label>
+                            <div class="form-group">
+                                <textarea required class="form-control"  name="avoid">Had bad experience or became a victim of a money fraud abroad? We sorry to hear it, and with it never happens ,also we would kindly ask You to share your bad experience if any with our community.</textarea>
+                            </div>   
+                            
+                        <label> Optional Fields </label>  
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button id='addNewField' class="btn btn-warning" type="button">Add</button>
+                                </span>
+                                <select id="additionalFields" class="form-control"  name='additionalFields'>
+                                    <% for (i=0;i<additionalFields.length;i++){%>
+                                     <option><%=additionalFields[i]%></option>
+                                    <% }%>
+                                </select> 
+                            </div>
+                        <div id="newPostForm"> </div>    
+                            <hr>
+                            
+                            <div class="form-group">
+                                <input class="btn btn-lg btn-warning btn-block" type="submit">
+                            </div>
+                                      
+                            <br>
+                        <a href="/index">Back to CAMPS</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+       
+    <% include ../partials/neewPostMap    %>
+    <% include ../partials/footer     %>
+    <% include ../partials/addToVisited     %>
+    
+<!--Dynamicly Adding inputs-->
+<script>
+    const   newPostForm = document.getElementById('newPostForm')
+    const   addNewFieldButton = document.getElementById('addNewField')
+    const   additionalFields = document.getElementById('additionalFields')
+    let     newInput = document.createElement("input");
+    
+    addNewFieldButton.addEventListener("click",function(){
+        console.log("Hello!!!")
+        newPostForm.innerHTML=newPostForm.innerHTML + "<br>" +
+        "<input class='form-control' placeholder='"+additionalFields.value +"'" + 
+        "name='additional[]'>" + "<br>"
+                additionalFields.remove(additionalFields.selectedIndex);
 
-</div>
-
-<% include ../partials/footer     %>
+    })
+    
+    
+</script>

@@ -1,0 +1,68 @@
+ <script>
+ 
+
+       let countryInput = document.getElementById('countryInput');
+       let regionInput = document.getElementById('regionInput');
+       let subRegionInput = document.getElementById('subRegionInput');
+       let capitalInput = document.getElementById('capitalInput');
+       let latInput = document.getElementById('latInput') ;
+       let lngInput = document.getElementById('lngInput') ;
+       let flag = document.getElementById('flag') ;
+       
+     var  map = AmCharts.makeChart("chartdiv", { 
+  "type": "map",
+  "theme": "dark",
+  "projection": "eckert3",
+  "dataProvider": {
+    "map": "worldLow",
+    "getAreasFromMap": true
+  },
+  "areasSettings": {
+    "selectedColor": "rgb(79, 46, 22, 0.75)",
+    "selectable": true,
+    "autoZoom": true,
+  },
+   
+  "listeners": [{
+    "event": "clickMapObject",
+    "method": function(e) {
+         
+         if (e.mapObject.objectType !== "MapArea")
+        return;
+        var area = e.mapObject;
+        area.showAsSelected = !area.showAsSelected;
+        e.chart.returnInitialColor(area);
+        // making ajax call to get capital of the country  
+        currentCountry =  getSelectedCountries();
+        $("#chartdiv").addClass("disabledbutton");
+        
+        $.ajax ({url: "https://restcountries.eu/rest/v2/alpha/" + currentCountry,
+               dataType:"json",
+               success: function(response){
+               resp = response;
+               console.log(resp)
+                 
+               latInput.value = resp.latlng[0];
+               lngInput.value = resp.latlng[1];
+               countryCode.value = resp.alpha2Code;
+               countryInput.value = resp.name;
+               regionInput.value = resp.region;
+               subRegionInput.value = resp.subregion;
+               capitalInput.value = resp.capital;
+                }
+          });
+           function getSelectedCountries() {
+  var selected;
+    
+  for(var i = 0; i < map.dataProvider.areas.length; i++) {
+    if(map.dataProvider.areas[i].showAsSelected)
+      selected=map.dataProvider.areas[i].id;
+     
+  }
+  return selected;
+}
+     } 
+   }]
+ }); </script>
+
+  

@@ -1,25 +1,33 @@
- 
-var express     = require("express"),
+ const 
+    express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
     passport    = require("passport"),
     LocalStrategy = require("passport-local"),
-    Post   = require("./models/campground"),
+    Post        = require("./models/campground"),
     Comment     = require("./models/comment"),
     User        = require("./models/user"),
+    Tags        = require("./models/tags"),
     methodOverride = require("method-override"),
     seedDB      = require("./seeds"),
-    flash       = require("connect-flash");
+    flash       = require("connect-flash"),
+    cloudinary = require('cloudinary');
 
 //  requiring routes
-var commentRoutes    = require("./routes/comments"),
-    campgroundRoutes = require("./routes/campgrounds"),
-    indexRoutes      = require("./routes/index")
+const indexRoutes      = require("./routes/index");
+ const   commentRoutes    = require("./routes/comments");
+  const  campgroundRoutes = require("./routes/campgrounds");
     
-    
+  cloudinary.config({ 
+     cloud_name: 'civilizador', 
+     api_key: '135275663643615', 
+     api_secret: 'uXYt4Vscn4tyEHzKaJ83wgyMP8A' 
+ });
+
+
     //  Connecting to DB yelpcamp
-    mongoose.connect("mongodb://localhost/finalProject");
+    mongoose.connect("mongodb://localhost/finalProject2");
     //  Moment.js config
      app.locals.moment = require("moment");
     
@@ -32,11 +40,13 @@ var commentRoutes    = require("./routes/comments"),
     }));
     app.use(passport.initialize());
     app.use(passport.session());
+    
     passport.use(new LocalStrategy(User.authenticate()));
     passport.serializeUser(User.serializeUser());
     passport.deserializeUser(User.deserializeUser());
     
     app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.json());
     app.set("view engine", "ejs");
     app.use(express.static(__dirname + "/public"));
     //  using method ovverride to be able to make put request
@@ -46,14 +56,16 @@ var commentRoutes    = require("./routes/comments"),
     
      //   Creating a function that will check if there is a username/i.e is user loged in or not.
     app.use(function(req, res, next){
-    res.locals.currentUser = req.user;// req.user will either be empty or contain information about user from the request
-    res.locals.error = req.flash("error");
-    res.locals.success = req.flash("success");
-    next();  }); 
+     res.locals.currentUser = req.user;// req.user will either be empty or contain information about user from the request
+     res.locals.error = req.flash("error");
+     res.locals.success = req.flash("success");
+     next()
+    }); 
     
     //  shorting down route length by defining prefixes for coment campground and auth routes.                
     app.use("/", indexRoutes);
     app.use("/index", campgroundRoutes);
-    app.use("/index/:id/comments",commentRoutes);
+    app.use("/index/:id/comments", commentRoutes);
 
-    app.listen(process.env.PORT,process.env.IP,function(){console.log("Server had been started")});
+    app.listen(process.env.PORT,process.env.IP,function(){console.log("Server had been started on port", process.env.PORT)});
+    
