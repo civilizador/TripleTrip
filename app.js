@@ -27,7 +27,7 @@ const indexRoutes      = require("./routes/index");
 
 
     //  Connecting to DB yelpcamp
-    mongoose.connect("mongodb://localhost/finalProject2");
+    mongoose.connect("mongodb://civilizador:Asimssoft1@ds163918.mlab.com:63918/camp");
     //  Moment.js config
      app.locals.moment = require("moment");
     
