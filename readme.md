@@ -1,6 +1,5 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
- 
-#TripleTrip - advanced travel blog/adviser
+  
+<h1> TripleTrip </h1> -<H2> advanced travel blog/adviser</h2>
 <hr>
 <h3> App runs on Node.js </h3>
 <h4>  </h4>
