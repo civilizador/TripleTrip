@@ -1,12 +1,15 @@
   
-<h1> TripleTrip </h1> -<H2> advanced travel blog/adviser</h2>
+<h1> TripleTrip </h1> 
+<h2> advanced travel blog/adviser</h2>
 <hr>
 <h3> App runs on Node.js </h3>
-<h4>  </h4>
+<h4> uses amcharts for building maps  </h4>
+<h4> uses google geocoder to decode entered address and build a google map, base on coordinates  </h4>
+<h4> uses countries API to get country details </h4>
 <h2 class='btn btn-warnign'> Features </h2>
 <hr>
 <ul>
- <li><h2> User Profile </h2> </li>
+ <li> <h2> User Profile </h2> </li>
  <pre>
    1. User model stores information about visited countries and loads map in profile page .
    2. User can change avatar
@@ -26,12 +29,4 @@
    
  </pre>
  </ul>
-req.user - contains LOGED IN user information. 
-
-Because if no one loged in there is no request posible because isLoggedIn function that we are using to check
-if user login before applying any changes.
-
-Problems: 
-1. Automatically read home city of the user and hightlight city on the map.
-2. When registering allow user to select from the list of cities.
-3. 
+ 
