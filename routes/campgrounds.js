@@ -20,9 +20,9 @@
                          {name: 'australia' ,
                               image: 'https://images.unsplash.com/photo-1493375366763-3ed5e0e6d8ec?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c4e66550a9b8c04ae4ab72c1bcf0829&auto=format&fit=crop&w=1081&q=80'},
                          ];
-    const apiKey       = "AIzaSyBQoVF1uACfK40haSfi-ZxKGTEINtmQOpE";
+    const apiKey       = process.env.apiKey;
  
-    
+     
     //MULTER CONFIG: to get file photos to temp server storage
     const multerConfig = {
         
