@@ -4,7 +4,7 @@
 <hr>
 <h3> App runs on Node.js </h3>
 <h4>  </h4>
-<h2 class='btn btn-warnign'> Feautures </h2>
+<h2 class='btn btn-warnign'> Features </h2>
 <hr>
 <ul>
  <li><h2> User Profile </h2> </li>
