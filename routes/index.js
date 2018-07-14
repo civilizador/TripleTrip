@@ -76,13 +76,20 @@ async function getAllCountriesInfo (country) {
         } 
         )    
      });
+let countNames = [] ;
+let countNames2 = [] ;
 
-    // game
+     // game
     router.get("/user/:id/game", async function (req,res){
       try {
         const foundUser = await User.findById(req.params.id)
         const visitedCountries = foundUser.countriesVisited[0].substring(2,foundUser.countriesVisited[0].length-2).split('","')
         const countriesInfo = await Promise.all(visitedCountries.map(getAllCountriesInfo))
+            countNames = [] ;
+        countriesInfo.forEach(function(countryInfoDetails) {
+              countNames.push( [countryInfoDetails.name,countryInfoDetails.capital] )
+ 
+             } )
         
         const posts = await Posts.find().where('author.id').equals(foundUser._id).exec()
         res.render("users/game", { 
@@ -90,7 +97,8 @@ async function getAllCountriesInfo (country) {
           foundPosts:posts,
           currentUser:req.user,
           countriesInfo,
-        });    
+           countNames,
+         });    
       }
       catch (e) {
         console.log(e)

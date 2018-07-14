@@ -413,13 +413,16 @@
                            border: 3px solid rgba(212,175,55,0.5);}
                            
 .shortDetailsDivOnShowPage{height: auto;
-                              background-color: white;
+                           background-color: white;
+                           z-index: 999;
                            width:100%;}
  .detailsDivOnShowPage{height: auto; 
+                          margin-top: 25px; 
                        margin-bottom: 25px; 
                            width:100%;
                         background-color: white;
                         color: gray;
+                         z-index: 999;
                         padding: 25px;
  }
                            
