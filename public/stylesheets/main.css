@@ -81,8 +81,8 @@
     	border-radius: 25px;
     	position: absolute;
     	opacity: 0.8;
-    	top: -380px;
-    	left: -150px;
+    	top:  10%;
+    	left: 10%;
     }
     
     .profilePhoto{border-style: ridge;

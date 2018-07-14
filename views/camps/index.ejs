@@ -42,14 +42,15 @@
             <% allposts.forEach(function(allpostsPlaceholder){ %>
 
                <div class="carousel-item">
-                    <img src="<%= allpostsPlaceholder.images[0] %>" >
+                    <img src="<%= allpostsPlaceholder.images[0] %>" >  
+                    <div class='mapOnIndexPage' id="mapOnIndexPage<%=allpostsPlaceholder.id%>" style="width: 30%; height: 280px;">
+                                   <% include ../partials/mapOnIndexPage %>
+                              </div> 
+                    
                          <div class="carousel-caption d-none d-md-block">
                               <script type="text/javascript" src="https://www.amcharts.com/lib/3/maps/js/<%=allpostsPlaceholder.country%>Low.js"></script>
-                                   
-                                   <% include ../partials/mapOnIndexPage %>
-                                   
                                <!--End of Map-->
-                              <div class='mapOnIndexPage' id="mapOnIndexPage<%=allpostsPlaceholder.id%>" style="width: 40%; height: 250px;"></div>
+                            
                               <div id='indexPageOthersSlidesCaption'>
                               <h3><%=  allpostsPlaceholder.name  %></h3> <h3><%=  allpostsPlaceholder.typeOfTrip  %></h3>
                               <h4> <%=  allpostsPlaceholder.desc.substring(0,60); %>...</h4>
