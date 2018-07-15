@@ -76,55 +76,45 @@ async function getAllCountriesInfo (country) {
         } 
         )    
      });
-let countNames = [] ;
-let countNames2 = [] ;
-
-     // game
-    router.get("/user/:id/game", async function (req,res){
-      try {
-        const foundUser = await User.findById(req.params.id)
-        const visitedCountries = foundUser.countriesVisited[0].substring(2,foundUser.countriesVisited[0].length-2).split('","')
-        const countriesInfo = await Promise.all(visitedCountries.map(getAllCountriesInfo))
-            countNames = [] ;
-        countriesInfo.forEach(function(countryInfoDetails) {
-              countNames.push( [countryInfoDetails.name,countryInfoDetails.capital] )
- 
-             } )
-        
-        const posts = await Posts.find().where('author.id').equals(foundUser._id).exec()
-        res.render("users/game", { 
-          foundUser, 
-          foundPosts:posts,
-          currentUser:req.user,
-          countriesInfo,
-           countNames,
-         });    
-      }
-      catch (e) {
-        console.log(e)
-        req.flash("error","something is wrong")
-        res.redirect("/")
-      }
-
-  })
-
-
-
-
-
-
-
-
-
-
-
+     
+     // game route
+     
+     let countNames = [] ;
+     let countNames2 = [] ;
+     
+     router.get("/user/:id/game", async function (req,res){
+           try {
+             const foundUser = await User.findById(req.params.id)
+             const visitedCountries = foundUser.countriesVisited[0].substring(2,foundUser.countriesVisited[0].length-2).split('","')
+             const countriesInfo = await Promise.all(visitedCountries.map(getAllCountriesInfo))
+                    countNames = [] ;
+                    countriesInfo.forEach(function(countryInfoDetails) {
+                    countNames.push( [countryInfoDetails.name,countryInfoDetails.capital] )
+               } )
+             const posts = await Posts.find().where('author.id').equals(foundUser._id).exec()
+             res.render("users/game", { 
+               foundUser, 
+               foundPosts:posts,
+               currentUser:req.user,
+               countriesInfo,
+               countNames,
+              });    
+           }
+           catch (e) {
+             console.log(e)
+             req.flash("error","something is wrong")
+             res.redirect("/")
+           }
+     })
 
      //   Show REGISTER form page
+     
      router.get("/register",function(req, res) {
       res.render("register",{currentUser:req.user});
     });
 
-     //   handle sign up logic
+     //   handle REGISTER logic
+     
      router.post("/register", function(req, res){
 
       var newUser = new User({
@@ -142,7 +132,7 @@ let countNames2 = [] ;
                //    eval (require("locus"))
                User.register(newUser, req.body.password, function(err, user){
                  if(err){
-                  req.flash("error", err.message);
+                  req.flash("error: "+err,"something is wrong");
                   return res.render("register");
                 }
                 passport.authenticate("local")(req, res, function(){
@@ -203,14 +193,16 @@ let countNames2 = [] ;
      
      router.put("/user/:id", function(req, res){
      // find and update the correct campground
-     User.findByIdAndUpdate(req.params.id, req.body.userDet, function(err, foundUser){
-       if(err){throw err} else 
-       {
-           //redirect somewhere(show page)
-           res.redirect("/user/" + req.params.id);
-         }
-       });
-   });
-// тут этого не было!
-module.exports = router
-// ^^^^^^^^^^^^^^^^^^^^
+          User.findByIdAndUpdate(req.params.id, req.body.userDet, function(err, foundUser){
+               if(err){req.flash("error","something is wrong");
+                    res.redirect("/index")  
+               } else {
+                     //redirect somewhere(show page)
+                     res.redirect("/user/" + req.params.id);
+                   }
+          });
+     });
+     
+     
+ module.exports = router
+ 

@@ -193,8 +193,8 @@
    }
    #homeCountry {text-transform: lowercase;}
    #countryInput {text-transform: lowercase;}
-   #indexPageFirstSlideCaption {margin-bottom: 190px; text-align: center;}
-   #indexPageOthersSlidesCaption {margin-bottom: 160px;}
+   #indexPageFirstSlideCaption {margin-bottom: 5vh; text-align: center; }
+   #indexPageOthersSlidesCaption {margin-bottom: 10vh;}
    #imageOnIndexPage {width:90%;
                       height: 300px;
    }
@@ -240,9 +240,10 @@
    margin-bottom: 0;
    
   } 
+  .carousel-control-prev {display: none;}
 	.navbar.navbar-custom1 {position: absolute;
   width: 100%;
-		top:10;
+		top:0;
 		left:0;
 		float:right;
 		font-size: 20px;
@@ -344,8 +345,7 @@
 		              /*border: 2px solid red;*/
   }
    #formOnReg {margin-left: 20%;}
-   #logoMainPage {width: 45%;  margin-left: 30%; 
-   }
+   #logoMainPage {width: 38%; height: auto;  margin-left: 30%; }
    #footer{margin-top: 4%;}
    .roundedBorder {border-radius: 25px;}
    .disabledbutton {

@@ -14,12 +14,12 @@
           
     <div class="field customField">
       <label>Name</label>
-      <input type="text" name="first" placeholder="name">
+      <input required type="text" name="first" placeholder="name">
     </div>
     
     <div class="field customField">
       <label>Last Name</label>
-      <input type="text" name="last" placeholder="last name">
+      <input required type="text" name="last" placeholder="last name">
     </div>
     
     <div class="field customField">
@@ -53,18 +53,13 @@
     <br>
     <div class="field customField">
       <label>User Name</label>
-      <input type="text" name="username" placeholder="Username">
+      <input required type="text" name="username" placeholder="Username">
     </div>
     
     <div class="field customField">
       <label>Password</label>
-      <input type="text" name="password" placeholder="password">
+      <input onfocus="this.value=''" required type="text" name="password" placeholder="password">
     </div>
-    
-     
-    
-   
-    
   
     <div class="field customField">
       <label>Social Media</label>
@@ -77,7 +72,7 @@
  
     <div class="field customField">
       <div>
-        <input type="checkbox"  required>
+        <input  type="checkbox"  required>
         <label style="padding-top: 3px;">I agree to the <a href="/">Terms and Conditions</a></label>
       </div>
     </div>

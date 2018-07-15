@@ -217,7 +217,7 @@ google.maps.event.addDomListener(window, 'load', initMap);
                         <div class="col-lg-6">
                             <div  class="col-lg-12" id="map1" style="width: 100%; border: 5px ridge rgba(212,175,55,0.5); height: 350px;"></div>
 	                            <% include ../partials/showPageHomeCountryMap %>
-	                                <h3 class="pull-right"> <a href="/index/showCountry/<%=  posts.country  %>">  <%=  posts.country  %> </a>  </h3>
+	                                <h3 class="pull-right"> <a href="/index/showCountry/<%=  posts.country  %>">  <%=  posts.country.toUpperCase()  %> </a>  </h3>
 	                                <br>
 	                                <div> <img id='flag' src='' /></div>
 	                                <hr>
@@ -390,7 +390,7 @@ google.maps.event.addDomListener(window, 'load', initMap);
                                             <form class="ui reply form" action="/index/<%=posts._id%>/comments" method="POST">
                                                 <br>  
                                                 <div  class="field">
-                                                    <textarea style="width: 80%;" rows="12" name="comment[text]" > Start writing your comments here</textarea>
+                                                    <textarea  onfocus="this.value=''"  style="width: 80%;" rows="12" name="comment[text]" > Start writing your comments here</textarea>
                                                 </div>
                                                 <div  class="field">
                                                     <button class="ui primary submit labeled icon button" >  <i class="icon edit"></i>Submit</button>
