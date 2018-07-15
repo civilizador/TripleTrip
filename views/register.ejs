@@ -58,7 +58,19 @@
     
     <div class="field customField">
       <label>Password</label>
-      <input onfocus="this.value=''" required type="text" name="password" placeholder="password">
+       <input onfocus="this.value=''" type="password" name='password' value="FakePSW" id="myInput"><br><br>
+       <input type="checkbox" onclick="myFunction()">Show Password
+      <script>
+          function myFunction() {
+              var x = document.getElementById("myInput");
+              if (x.type === "password") {
+                  x.type = "text";
+              } else {
+                  x.type = "password";
+              }
+          }
+      </script>
+
     </div>
   
     <div class="field customField">
