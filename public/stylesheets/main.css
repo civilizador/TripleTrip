@@ -117,7 +117,8 @@
     }
     .quote {width: 30%;
             height: 20vh;
-            overflow-x: scroll;
+            overflow-x: hidden;
+            overflow-y: scroll;
             padding: 20px;
             border: 5px inset rgba(212,175,55,0.5);
             color: silver;
