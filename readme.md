@@ -3,10 +3,14 @@
 <h2> advanced travel blog/adviser</h2>
 <hr>
 <h3> App runs on Node.js </h3>
-<h4> uses amcharts for building maps  </h4>
-<h4> uses google geocoder to decode entered address and build a google map, base on coordinates  </h4>
-<h4> uses countries API to get country details </h4>
-<h2 class='btn btn-warnign'> Features </h2>
+<pre>
+<h4>  amcharts for building maps  </h4>
+<h4>  google geocoder to decode entered address and build a google map, base on coordinates  </h4>
+<h4>  countries API to get country details </h4>
+</pre>
+<h1> DO NOT FORGET TO SET ENV VARIABLE IN YOUR TERMINAL : <pre> export apiKey='' </pre> </h1
+
+<h2> Features </h2>
 <hr>
 <ul>
  <li> <h2> User Profile </h2> </li>
