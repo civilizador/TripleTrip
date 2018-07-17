@@ -63,37 +63,39 @@
      
      //INDEX - show all campgrounds
      router.get("/", function(req, res){
-          let noMatch = null;
-          if(req.query.search) {
-          const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-        // Get all campgrounds from DB
-          Posts.find({},function(err,allposts){  //here we pass all objects from DB to "allcamp" using callback function
-          if(err){ console.log(err);} 
-          else {
-               if(allposts.length < 1) {
-                  noMatch = "No campgrounds match that query, please try again.";
-               }
-               res.render("camps/index",{allposts: allposts, currentUser: req.user, success: req.flash("success"), noMatch: noMatch});
-                    }
-          });
-          } 
-          else {
-           // Get all campgrounds from DB
-          Posts.find({}, function(err, allposts){
-           if(err){
-               console.log(err);
-           } else {
-                Tags.find({},function(err, alltags) {
-                    if(err){ 
-                         console.log(err);}
-                         else{
-                              res.render("camps/index",{allposts: allposts, noMatch: noMatch, tempRegions: tempRegions, alltags:alltags});
+               let noMatch = null;
+                    if(req.query.search) {
+                         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+                         Posts.find({'name':regex},function(err,allposts){  //here we pass all objects from DB to "allcamp" using callback function
+                              if(err){ 
+                                   console.log(err);
+                              } else {
+                                   if(allposts.length < 1) {
+                                      noMatch = "No campgrounds match that query, please try again.";
                                    }
-                })
-           }
-        });
-    }
-});
+                                   res.render("camps/index",{allposts: allposts, currentUser: req.user,tempRegions: tempRegions, success: req.flash("success"), noMatch: noMatch});
+                              }
+                         }); 
+                    }          
+               else {
+               
+                // Get all campgrounds from DB
+               Posts.find({}, function(err, allposts){
+                if(err){
+                    console.log(err);
+                } else {
+                     Tags.find({},function(err, alltags) {
+                         if(err){ 
+                              console.log(err);}
+                              else{
+                                   res.render("camps/index",{allposts: allposts, noMatch: noMatch, tempRegions: tempRegions, alltags:alltags});
+                                        }
+                     })
+                }
+             });
+          }
+          }
+     );
  
        //INDEX - show all campgrounds
      router.get("/filter", function(req, res){
