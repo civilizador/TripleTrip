@@ -1,360 +1,212 @@
- <%= countriesInfo %>
- <%= foundUser.countriesVisited %>
-  <!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-	<script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
-     <script src="https://www.amcharts.com/lib/3/ammap.js"></script>
-     <script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
-     <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-     <style>
-          .iconQuestion {font-size: 2em;   
-               margin-left: 10px;
-               margin-right: 50px;
-     }
-#scores {      font-size: 40px;
+    <% include ../partials/header %>
+    <link rel="stylesheet" href="/stylesheets/game.css">
     
-}
-#mainFrame {   width: 80%; 
-               height: auto; 
-               margin:0 auto; 
-               z-index: -3;
-               border-radius: 25px; 
-               background: rgb(234, 178, 39, 0.9); 
-               padding-bottom: 10px;
-     }
-#correctAnswer{background: rgb(79, 46, 22, 0.75);
-               width: 45%;
-               line-height: 1em;
-               padding: 0;
-               margin: 0 auto;
-               border-radius: 20px;
-               border: 2px silver solid;
-               color: white;
-}
- 
-#answerOptions{list-style-type: none; 
-               font-size: 2em;
-               z-index: -2;
-               
-     }
-
-    #gameEndScreen {width: 100%; 
-               height: 880px; 
-               margin:0 auto; 
-               border-radius: 25px; 
-               background: rgb(167, 196, 242, 0.7); 
-               padding-bottom: 10px;
-               position: absolute;
-               top:0px;
-               bottom: 15px;
-               z-index: 15;
-               display: none;
-    }
-    #gameEndScreenSmall {
-                width: 40%; 
-               height: 25%; 
-               margin:0 auto; 
-               border-radius: 25px; 
-               background: rgb(237, 248, 255); 
-               padding-bottom: 10px;
-               position: relative;
-               top:250px;
-               bottom: 15px;
-               z-index: 15;
-    }
-    #finalScreenScores {
-               width: 45%;
-               height: 25%;
-               border: 1px  solid silver;
-    }
-#question {    position: relative;
-               z-index: 1;
-               margin-left:10%; 
-               top: 20px; 
-               padding-top: 30px;
-               text-align:center;
-               width: 82%; 
-               height: 124px;
-               border-radius: 25px; 
-               border: 2px solid silver; 
-               font-size: 24px;
-               background: rgb(242, 230, 201,0.55); 
-               color: "white";
-     }
-#info {color: white;}
-#controls {margin-top: 35px;
-    margin-left: 5%;
-}
-
-.wrong {background: rgb(79, 46, 22, 0.75);
-               margin-left:3%; 
-               width: 45%;
-               line-height: 1em;
-               padding: 0;
-               margin: 0 auto;
-               border-radius: 20px;
-               border: 2px silver solid;
-               color: ivory;
-}
-.noSelect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-     </style>
-</head>
-<body>
-    <h1>Countris Visited: </h1> <%= countNames %>
-              <h1>Countris Visited: </h1>
- <div id='gameEndScreen'>
-     <div  id='gameEndScreenSmall'> 
-          <h1>Your Score is: <h2 id='finalScreenScores'></h2></h1>
-          <button id="playSameGameButton" class="btn btn-lg btn-warning">Play again</button> 
-          <button id="newGameButton" class="btn btn-lg btn-success">New country</button> </div>
-     </div>
- <div class="container">
-     <h1>Click countries to select</h1>
-     <div class="noSelect" id="info">Selcted countries: <span id="selected"> - </span></div>
-     <div class="noSelect" id="chartdiv" style="margin: 0 auto; width: 90%; height: 350px;"></div>
-     <br>
-          <div class="noSelect" id="mainFrame">
-          <div class="noSelect" id="question"> </div>
-               <div id="controls" >
-                    <ul id="answerOptions" class="row">
-                      <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>
-                         <li class="col-lg-6 col-md-6 col-xs-12" id='correctAnswer'> </li>
-                              <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>
-                                 <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>  
-                    </ul>
-               </div>
+    <!--GAME OVER SCREE. Hided by default.-->
+    <div id='gameEndScreen'>
+        <div  id='gameEndScreenSmall'> 
+              <h1>Your Score is: <h2 id='finalScreenScores'></h2></h1>
+              <button id="playSameGameButton" class="btn btn-lg btn-warning">Play again</button> 
+              <button id="newGameButton" class="btn btn-lg btn-success">New country</button> 
+        </div>
+    </div>
+    
+    <!-- MAP -->
+    <div class="container">
+          <div class="noSelect" style="margin: 0 auto; margin-top:65px; width: 80%; height: 50vh;">
+                <h2>Visited Countries</h1>
+                <% include ../partials/editUserProfileMap %> 
           </div>
-  </div>
-<div style="width: 100px; 
-            height:100px;
-            position: absolute; 
-            top: 100px; 
-            right: 0px; 
-            font-size: 3em; 
-            display: inline;
-            border: 4px solid orange;
-            border-radius: 25px;
-            background: rgb(242, 230, 201,0.95);
-            color: white;
-            text-align: center;"
-            >
-    <h2  id='scores'> </h2> 
-</div>
-<button id="showAirport">Show airport</button>
-<script  type="text/javascript">
-     
-     var selectable = true;
-var clicked=false;
-var score=100;
-var latlan;
-//////////////////////
-///  CREATING MAP  ///
-/////////////////////
-var map = AmCharts.makeChart("chartdiv", {
-  "type": "map",
-  "theme": "dark",
-  "projection": "eckert3",
-  "dataProvider": {
-    "map": "worldLow",
-    "getAreasFromMap": true
-  },
-  "areasSettings": {
-    "selectedColor": "rgb(79, 46, 22, 0.75)",
-    "selectable": selectable
-  },
-  /**
-   * Add click event to track country selection/unselection
-   */
-  "listeners": [{
-    "event": "clickMapObject",
-    "method": function(e) {
-      
-      // Ignore any click not on area
-      if (e.mapObject.objectType !== "MapArea")
-        return;
-      
-      var area = e.mapObject;
-      
-      // Toggle showAsSelected
-      area.showAsSelected = !area.showAsSelected;
-      e.chart.returnInitialColor(area);
-      
-      // Update the list
-      document.getElementById("selected").innerHTML = JSON.stringify(getSelectedCountries());
-     if (currentPlayingCountries !== undefined && clicked!=true) {
-          $.ajax ({url: "https://restcountries.eu/rest/v2/alpha/" + currentPlayingCountries ,
-               dataType:"json",
-               success: function(response){
-                  resp = response;
-                  getAnswers(resp);  
-                  b=questions[0] + resp.name;
-                  $('#question').html(b); 
-                  $('#scores').html(score);
-                latlan =  resp.latlng;
-               }
-          });
-            
-            questNumber++ 
-            clicked=true;
-     } 
-    }
-  }]
-});
-
-/**
- * Function which extracts currently selected country list.
- * Returns array consisting of country ISO2 codes
- */
-function getSelectedCountries() {
-  var selected = [];
-  for(var i = 0; i < map.dataProvider.areas.length; i++) {
-    if(map.dataProvider.areas[i].showAsSelected)
-      //selected.push(map.dataProvider.areas[i].id);
-      currentPlayingCountries =  map.dataProvider.areas[i].id;
-  }
-  // return selected;
-}
-
-  ////////////////////
- ///   END OF MAP ///
-////////////////////
-  var gameEndScreen = document.getElementById('gameEndScreen')
-  var newGameButton = document.getElementById('newGameButton')
-  var finalScreenScores = document.getElementById('finalScreenScores')
-  var chartdiv=document.getElementById('chartdiv');
-  var resp;
-  var b;
-  var questNumber=0;
-  var answers=[];
-  var currentPlayingCountries;
-  var allData= [
-  ["Avar","Azerbaijani","Bambara","Basque","Bassa","Belarusian","Bemba","Bengal","Berta","Bisla","Bosnian","Breton","Buginese","Buhid","Bulgarian","Burmes","Carrier","Catalanian","Cebuano","Danish","Dargwa","Dhivehi","Dutch","Dzongkha","Erzya","Esperanto","Ees","Evenki","Ewe","Faroese","Fijian","Suo","French","Frisian","Creole","Himba ","Hindi","Hindustani","Hiri Motu ","Igbo","Jutis","Kaingang","Latin","Latvian","Lithuanian","Livonian"] ,
-     ["apsar","ruble","pound","dinar","wanza","peso","dram","pound","manat","dollar","dinar","taka","franc","ngultrum","rupee","boliviano","mark","pula","real","lev","riel","escudo","yuan","kuna","guilder","koruna","krone","nakfa","birr","dalasi","lari","cedi","quetzal","gourde","lempira","forint","rupiah","new shekel","yen","tenge","shilling","won","som","kip","loti","rand","pataca","ariary","kwacha","ouguiya","leu","tögrög","dirham","metical","naira","lira","balboa","złoty","peseta"],
-        ["Capital City","Abu Dhabi","Accra","Adamstown","Addis Ababa","Algiers","Alofi","Amman","Amsterdam","Andorra la Vella","Ankara","Antananarivo","Apia","Ashgabat","Asmara","Astana","Asunción","Athens","Avarua","Baghdad","Baku","Bamako","Bandar Seri Begawan","Bangkok","Bangui","Banjul","Basseterre","Beijing","Beirut","Belgrade","Belmopan","Berlin","Bern","Bishkek","Bissau","Bogota","Brasília","Bratislava","razzaville","Bridgetown","Brussels","Bucharest","Budapest","Buenos Aires","Conakry","Copenhagen","Damascus","Dhaka","Freetown","Funafuti","Gaborone","George Town","Georgetown","Georgetown","Gibraltar","Grytviken","Hamilton","Hanga Roa","Hanoi","Harare","Havana","Helsinki","Islamabad","Jakarta","Jamestown","Juba","Kampala","Khartoum","Kiev","Kigali","Kingston","Kuala Lumpur","Kuwait City","Lilongwe","Lima","Lisbon","Ljubljana","Lomé","London","Manama","Manila","Marigot","Maseru","Moscow","Muscat","Nairobi","Nassau","New Delhi","Niamey","Nicosia","Palikir","Panama City","Papeete","Paramaribo","Paris","Plymouth","Brades Estate","Podgorica","Cetinje","Port Louis","Port Moresby","Port Vila","Prague","Praia","Pristina","Pyongyang","Quito","Rabat","Reykjavík","Riga","Riyadh","Road Town","Rome","Roseau","Sarajevo","Seoul","Singapore","Skopje","Sofia","Sri Jayawardenepura Kotte","Colombo","Stockholm","Sukhumi","Suva","Taipei","Tallinn","Tashkent","Tbilisi"],
-          [],
+    <!--END of MAP-->
+         <br>
+    <!-- Answers DIVs -->
+            <div class="noSelect" id="mainFrame">
+                <div class="noSelect" id="question"> </div>
+                    <div id="controls" >
+                            <ul id="answerOptions" class="row">
+                                <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>
+                                <li class="col-lg-6 col-md-6 col-xs-12" id='correctAnswer'> </li>
+                                <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>
+                                <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>  
+                            </ul>
+                    </div>
+                </div>
+            </div>
+    
+    <!--SCORE BOARD. Hided by default.-->
+    <div id='scoresDiv'>
+        <h2  id='scores'> </h2> 
+    </div>
+    
+    <button id='startTheGame' class='btn btn-lg btn-success'>START</button> 
+    
+    <!-- Using variables from controller in our JS script tag -->
+     Countries Playing: <br><%= countNames %> <br>
+     Capitals Playing:<br> <%= countCapitals %><br>
+     Population Playing:<br> <%= countPopulation %><br>
+     Currency Playing: <br><%= countCurrency %><br>
+     Languages Playing:<br> <%= countLang %><br>
+    
+    <!--Printing out all information about countries. FOR DEVELOPMENT ONLYs-->
+    <%= countriesInfo %><br>
+    <hr>
+   <h1> <% let tempCountriesVisited = foundUser.countriesVisited.split(',') %><br> </h1>
+    
+    <script  type="text/javascript">
+    // DEFINING VARIABLES for GAME and GAME LOGIC
+        let score=100;
+        let questNumber=-1;
+        let latlan;
+        let answers=[];
+        let currentPlayingCountries;
+        let countNamesJs =  <%- countNames %> ;
+        let countCapitalsJs =  <%- countCapitals %> ;
+        let countPopulationJs =  <%- countPopulation %> ;
+        let countLangJs =  <%- countLang %> ;
+        let countCurrencyJs =  <%- countCurrency %> ;
+        let countRegionJs =   <%- countRegion %> ;
+        let countsubRegionJs =   <%- countsubRegion %> ;
+        let allInfo  = [] ;
+        // Information on all countries that are playing. For Ex. If playing 8 countries then allInfo[0] will contain 8 languages.
+        // Places match to Questions. 
+          allInfo[0] = countLangJs ;
+          allInfo[1] = countCurrencyJs ;
+          allInfo[2] = countCapitalsJs ;
+          allInfo[3] = countPopulationJs ;
+          allInfo[4] = countRegionJs ;
+          allInfo[5] = countsubRegionJs ;
+        const gameEndScreen =       document.getElementById('gameEndScreen');
+        const newGameButton =       document.getElementById('newGameButton')
+        const finalScreenScores =   document.getElementById('finalScreenScores')
+        const chartdiv =            document.getElementById('chartdiv');
+        const li =                  document.getElementById("correctAnswer") 
+        const wrongLi =             document.getElementsByClassName("wrong")
+        const allData = [
+            ["Avar","Azerbaijani","Bambara","Basque","Bassa","Belarusian","Bemba","Bengal","Berta","Bisla","Bosnian","Breton","Buginese","Buhid","Bulgarian","Burmes","Carrier","Catalanian","Cebuano","Danish","Dargwa","Dhivehi","Dutch","Dzongkha","Erzya","Esperanto","Ees","Evenki","Ewe","Faroese","Fijian","Suo","French","Frisian","Creole","Himba ","Hindi","Hindustani","Hiri Motu ","Igbo","Jutis","Kaingang","Latin","Latvian","Lithuanian","Livonian"] ,
+            ["apsar","ruble","pound","dinar","wanza","peso","dram","pound","manat","dollar","dinar","taka","franc","ngultrum","rupee","boliviano","mark","pula","real","lev","riel","escudo","yuan","kuna","guilder","koruna","krone","nakfa","birr","dalasi","lari","cedi","quetzal","gourde","lempira","forint","rupiah","new shekel","yen","tenge","shilling","won","som","kip","loti","rand","pataca","ariary","kwacha","ouguiya","leu","tögrög","dirham","metical","naira","lira","balboa","złoty","peseta"],
+            ["Capital City","Abu Dhabi","Accra","Adamstown","Addis Ababa","Algiers","Alofi","Amman","Amsterdam","Andorra la Vella","Ankara","Antananarivo","Apia","Ashgabat","Asmara","Astana","Asunción","Athens","Avarua","Baghdad","Baku","Bamako","Bandar Seri Begawan","Bangkok","Bangui","Banjul","Basseterre","Beijing","Beirut","Belgrade","Belmopan","Berlin","Bern","Bishkek","Bissau","Bogota","Brasília","Bratislava","razzaville","Bridgetown","Brussels","Bucharest","Budapest","Buenos Aires","Conakry","Copenhagen","Damascus","Dhaka","Freetown","Funafuti","Gaborone","George Town","Georgetown","Georgetown","Gibraltar","Grytviken","Hamilton","Hanga Roa","Hanoi","Harare","Havana","Helsinki","Islamabad","Jakarta","Jamestown","Juba","Kampala","Khartoum","Kiev","Kigali","Kingston","Kuala Lumpur","Kuwait City","Lilongwe","Lima","Lisbon","Ljubljana","Lomé","London","Manama","Manila","Marigot","Maseru","Moscow","Muscat","Nairobi","Nassau","New Delhi","Niamey","Nicosia","Palikir","Panama City","Papeete","Paramaribo","Paris","Plymouth","Brades Estate","Podgorica","Cetinje","Port Louis","Port Moresby","Port Vila","Prague","Praia","Pristina","Pyongyang","Quito","Rabat","Reykjavík","Riga","Riyadh","Road Town","Rome","Roseau","Sarajevo","Seoul","Singapore","Skopje","Sofia","Sri Jayawardenepura Kotte","Colombo","Stockholm","Sukhumi","Suva","Taipei","Tallinn","Tashkent","Tbilisi"],
+            [],
             ["Northern America", "South America", "Central America", "Eastern Europe","Western Europe","South Europe", "North Europe", "Australia","Northern Africa", "South Africa", "Eastern Asia", "Far East", "Middle East", "Antarctica", "Oceania"],
-               ["Capital City","Abu Dhabi","Accra","Adamstown","Addis Ababa","Algiers","Alofi","Amman","Amsterdam","Andorra la Vella","Ankara","Antananarivo","Apia","Ashgabat","Asmara","Astana","Asunción","Athens","Avarua","Baghdad","Baku","Bamako","Bandar Seri Begawan","Bangkok","Bangui","Banjul","Basseterre","Beijing","Beirut","Belgrade","Belmopan","Berlin","Bern","Bishkek","Bissau","Bogota","Brasília","Bratislava","razzaville","Bridgetown","Brussels","Bucharest","Budapest","Buenos Aires","Conakry","Copenhagen","Damascus","Dhaka","Freetown","Funafuti","Gaborone","George Town","Georgetown","Georgetown","Gibraltar","Grytviken","Hamilton","Hanga Roa","Hanoi","Harare","Havana","Helsinki","Islamabad","Jakarta","Jamestown","Juba","Kampala","Khartoum","Kiev","Kigali","Kingston","Kuala Lumpur","Kuwait City","Lilongwe","Lima","Lisbon","Ljubljana","Lomé","London","Manama","Manila","Marigot","Maseru","Moscow","Muscat","Nairobi","Nassau","New Delhi","Niamey","Nicosia","Palikir","Panama City","Papeete","Paramaribo","Paris","Plymouth","Brades Estate","Podgorica","Cetinje","Port Louis","Port Moresby","Port Vila","Prague","Praia","Pristina","Pyongyang","Quito","Rabat","Reykjavík","Riga","Riyadh","Road Town","Rome","Roseau","Sarajevo","Seoul","Singapore","Skopje","Sofia","Sri Jayawardenepura Kotte","Colombo","Stockholm","Sukhumi","Suva","Taipei","Tallinn","Tashkent","Tbilisi"],
- ];
- var citiesPictures = [{},{}]
-  // filling allData[3] with random population
-          populationRandom();
-  function populationRandom() {
-            for (i=0;i<220;i++) {
-              allData[3].push( Math.floor( Math.random()*650000000 )) 
+            ["Capital City","Abu Dhabi","Accra","Adamstown","Addis Ababa","Algiers","Alofi","Amman","Amsterdam","Andorra la Vella","Ankara","Antananarivo","Apia","Ashgabat","Asmara","Astana","Asunción","Athens","Avarua","Baghdad","Baku","Bamako","Bandar Seri Begawan","Bangkok","Bangui","Banjul","Basseterre","Beijing","Beirut","Belgrade","Belmopan","Berlin","Bern","Bishkek","Bissau","Bogota","Brasília","Bratislava","razzaville","Bridgetown","Brussels","Bucharest","Budapest","Buenos Aires","Conakry","Copenhagen","Damascus","Dhaka","Freetown","Funafuti","Gaborone","George Town","Georgetown","Georgetown","Gibraltar","Grytviken","Hamilton","Hanga Roa","Hanoi","Harare","Havana","Helsinki","Islamabad","Jakarta","Jamestown","Juba","Kampala","Khartoum","Kiev","Kigali","Kingston","Kuala Lumpur","Kuwait City","Lilongwe","Lima","Lisbon","Ljubljana","Lomé","London","Manama","Manila","Marigot","Maseru","Moscow","Muscat","Nairobi","Nassau","New Delhi","Niamey","Nicosia","Palikir","Panama City","Papeete","Paramaribo","Paris","Plymouth","Brades Estate","Podgorica","Cetinje","Port Louis","Port Moresby","Port Vila","Prague","Praia","Pristina","Pyongyang","Quito","Rabat","Reykjavík","Riga","Riyadh","Road Town","Rome","Roseau","Sarajevo","Seoul","Singapore","Skopje","Sofia","Sri Jayawardenepura Kotte","Colombo","Stockholm","Sukhumi","Suva","Taipei","Tallinn","Tashkent","Tbilisi"],
+        ];
+        //  DEFINING QUESTIONS
+        const questions = [  
+            "What is the official language in the ",
+            "What is the national currency of "   , 
+            "What is the capital of the "   ,
+            "What is the population of the " ,
+            "Part of which region is " ,
+            "Part of which sub-region is " ,
+        ];
+          
+        // filling allData[3] with random population
+            function populationRandom() {
+                for (i=0;i<220;i++) {
+                    allData[3].push( Math.floor( Math.random()*650000000 )) 
+                }
             }
-          }
-  //  end of random population        
- 
-  var questions = [  
-    "What is the official language in the ",
-    "What is the national currency of "   , 
-    "What is the capital of the "   ,
-    "What is the population of the " ,
-    "What is the name of this museum:  "  
-    
-  ];
-  // Grabbing only  DATA that we eould need for game from API and saving them into the array accordingly to questions.
-  
-  function getAnswers (resp) {
-                                console.log(resp)               
-                   answers[0]=(resp.languages[0].name)
-                   answerCurrency=(resp.currencies[0].name.split(' '))
-                   answers[1]=answerCurrency[1]
-                   answers[2]=capital=(resp.capital)
-                   answers[3]=population=(resp.population)
-                   answers[4]=partOftheWorld=(resp.subregion)
-                   
-    loadAnswer (answers); 
-  }
-      var  li = document.getElementById("correctAnswer") 
-      var wrongLi =[];
-      wrongLi = document.getElementsByClassName("wrong")
-      
-    //    Assigning correct and wrong answers to the 4 list items in UL.
-    
-  function loadAnswer  (answers) {
-    li.innerHTML="<i id='correctLi' class='iconQuestion far fa-question-circle'>"  + '</i>' + answers[questNumber-1] 
-        for (i=0;i<wrongLi.length;i++) {
-            wrongLi[i].innerHTML="<i id='wrongLi' id='correctLi' class='iconQuestion far fa-question-circle'>" + '</i>' + allData[questNumber-1][ Math.floor( Math.random()*allData[questNumber-1].length ) ] 
-        }
-   }
- 
-    $("#newGameButton").click(function(){window.location.reload()})
-    $("#playSameGameButton").click(function(){
-      gameEndScreen.style.display='none';
-      score=100;
-    })
-  
-  //  RANDOMLY DISPLAYING ANSWER OPTIONS //
-  
-    var uls = document.querySelectorAll('ul');
-      for (var j = 0; j < uls.length; j++) {
-         var ul = uls.item(j);
-            for (var i = ul.children.length; i >= 0; i--) {
-               ul.appendChild(ul.children[Math.random() * i | 0]);
-               }
-      }
-
-  //   Selecting CORRECT and WROG ANSWER List Items   //
-  
-     var correctListItem = document.getElementById("correctAnswer");
-     var wrongListItems = document.querySelectorAll(".wrong");
-  
-  //   Event listener on Correct and wrong answer List Items   //   
-  
-  correctListItem.addEventListener("click",function(){
+            populationRandom();
+        //  end of random population 
        
-       for (i=0; i <3; i++){
-                 wrongListItems[i].style.background="rgb(79, 46, 22, 0.75)"
-        }    
-        var uls = document.querySelectorAll('ul');
-      for (var j = 0; j < uls.length; j++) {
-        var ul = uls.item(j);
-            for (var i = ul.children.length; i >= 0; i--) {
-              ul.appendChild(ul.children[Math.random() * i | 0]);
-              }
-      }
-        if (questNumber < questions.length) {
-            $('#question').html(questions[questNumber]+resp.name);
-            questNumber++ 
-            removeOld ()
-              function removeOld () {
-                var lis = document.querySelectorAll('li');
-                  lis.innerHTML= ' ';
-                    loadAnswer (answers);
-              }
-        }
-        else {console.log("YOU WON")
-        gameEndScreen.style.display='inline-block'
-          $('#question').html('')
-            questNumber=0;
-          finalScreenScores.innerHTML=score; 
+        // Start the game function. For now each click should change question to random question.
+        
+        function startGame() {
+            let randomNum = Math.floor( Math.random()*5 )
+                let b= questions[randomNum] + countNamesJs[randomNum] 
+                          $('#question').html(b);         
+                          li.innerHTML="<i id='correctLi' class='iconQuestion far fa-question-circle'>"  + '</i>' + countLangJs[randomNum]   
+     
+                          $('#scores').html(score);
+                          getAnswers
+        };
             
-        }
-     });
-     for (i=0; i <3; i++){
-       wrongListItems[i].addEventListener("click",function(){
-               this.style.background="red"
-
-       score=score-5;
-        alert("Wrong!" + "Your score is " + score);
-         $('#scores').html(score);
-       })}
-       
-       
+        // Event Listener on Start the game  
+        
+        $('#startTheGame').click( 
+            startGame,
+        );
+        
+        // Grabbing only  DATA that we would need for game from API and saving them into the array accordingly to questions.
+        
+        function getAnswers () {
+            answers[0]=(allInfo[randomNum]);
+            answers[1]=(allInfo[randomNum]);
+            answers[2]=(allInfo[randomNum]);
+            answers[3]=(allInfo[randomNum]);
+            answers[4]=(allInfo[randomNum]);
     
-</script>
+             loadAnswer(answers);
+          }
+             
+         //    Assigning correct and wrong answers to the 4 list items in UL.
+        function loadAnswer  (answers) {
+            li.innerHTML="<i id='correctLi' class='iconQuestion far fa-question-circle'>"  + '</i>' + answers[randomNum] 
+                for (i=0;i<wrongLi.length;i++) {
+                    wrongLi[i].innerHTML="<i id='wrongLi' class='iconQuestion far fa-question-circle'>" + '</i>' + allData[randomNum][ Math.floor( Math.random()*allData[randomNum].length ) ] 
+                }
+        }
+     
+        $("#newGameButton").click(function(){window.location.reload()})
+        $("#playSameGameButton").click(function(){
+          gameEndScreen.style.display='none';
+          score=100;
+        })
+      
+      //  RANDOMLY DISPLAYING ANSWER OPTIONS //
+        var uls = document.querySelectorAll('ul');
+        
+            for (var j = 0; j < uls.length; j++) {
+                var ul = uls.item(j);
+                    for (var i = ul.children.length; i >= 0; i--) {
+                       ul.appendChild(ul.children[Math.random() * i | 0]);
+                    }
+            }
+    
+      //   Selecting CORRECT and WROG ANSWER List Items   //
+         var correctListItem = document.getElementById("correctAnswer");
+         var wrongListItems = document.querySelectorAll(".wrong");
+      
+      //   Event listener on Correct and wrong answer List Items   //   
+        correctListItem.addEventListener("click",function(){
+            for (i=0; i <3; i++){
+                wrongListItems[i].style.background="rgb(79, 46, 22, 0.75)"
+            }    
+            var uls = document.querySelectorAll('ul');
+            
+            for (var j = 0; j < uls.length; j++) {
+                var ul = uls.item(j);
+                    for (var i = ul.children.length; i >= 0; i--) {
+                        ul.appendChild(ul.children[Math.random() * i | 0]);
+                    }
+            }
+            // От старой версии игры осталось. Не думаю что нужно но нужен ее callback removeOld(). 
+            if (questNumber < questions.length) {
+                $('#question').html(questions[questNumber]+resp.name);
+                questNumber++ 
+                removeOld ()
+                  function removeOld () {
+                    var lis = document.querySelectorAll('li');
+                      lis.innerHTML= ' ';
+                        loadAnswer (answers);
+                  }
+            }
+            else {console.log("YOU WON")
+            gameEndScreen.style.display='inline-block'
+              $('#question').html('')
+                questNumber=0;
+              finalScreenScores.innerHTML=score; 
+                
+            }
+         });
+         for (i=0; i <3; i++){
+           wrongListItems[i].addEventListener("click",function(){
+                   this.style.background="red"
+    
+           score=score-5;
+            alert("Wrong!" + "Your score is " + score);
+             $('#scores').html(score);
+           })}
+    </script>
+
+
      </body>
 </html>

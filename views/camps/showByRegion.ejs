@@ -84,7 +84,7 @@
           <% allposts.forEach(function(allpostsPlaceholder){ %>
                <div id='post1' class="col-lg-6 col-md-4 col-sm-3">
                     <div class="thumbnail">
-                         <img id='imageOnIndexPage' class='image'  src="<%= allpostsPlaceholder.images[0].substring(0,allpostsPlaceholder.images[0].length) %>" >
+                         <img id='imageOnIndexPage' class='image'  src="<%= allpostsPlaceholder.images[0].substring(2,allpostsPlaceholder.images[0].length) %>" >
                          <div class="caption">
                               <h3> <%=  allpostsPlaceholder.name  %>  </h3>
                          </div>

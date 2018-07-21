@@ -1,118 +1,247 @@
+ <%= countriesInfo %>
+ <%= foundUser.countriesVisited %>
+  <!DOCTYPE html>
+<html>
+<head>
+	<title></title>
 	<script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
      <script src="https://www.amcharts.com/lib/3/ammap.js"></script>
      <script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
      <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-     <link rel="stylesheet" href="/stylesheets/main.css" type="text/css" />
-
-        <%= foundUser.countriesVisited %>
-        <%- foundUser.places %>
-        <%- foundPosts[0].cities%>
-        <%- foundPosts[0].places%>
-        
-        <% var allCountries=[]; %>
-        <% var allCities =[]; %>
-        <% var placesArray = [] ;%>
-        <% var allFoundPlaces = []; %>
-       
-        
-        <% let visited1=foundUser.countriesVisited[0].substring(2,foundUser.countriesVisited[0].length-2).split('","') %> 
-        <% var nameArray = [] ;%>
-        <% var NewNameArray = [] ;%>
-        <% coordArray = [] ;%>
-        <% var obj = []; %>
-        	 
-    	          <% for (i=0; i<foundPosts.length; i++){ %>
-        	          <% if (allCountries.indexOf(foundPosts[i].country.toLowerCase())==-1 ){ %>
-         		     <% allCountries.push(foundPosts[i].country.toLowerCase()) %>
-         		     <% allFoundPlaces.push(foundPosts[i].places.toLowerCase())%>
-         		     <% allCities.push(foundPosts[i].cities)%>
-             		<% } %>
-     			<% } %>
-     			
-     	   <%- allCities %>  
-     	   <%- allFoundPlaces %>  
-     	
-                  
-            <!--VISITED PLACES-->
-                             
-                <h4>Places visited:</h4>	
-                    <% for(i=0;i< nameArray.length;i++) { %>
-                        <% obj.push({Name: nameArray[i][0], Lat: nameArray[i][1], Lng: nameArray[i][2] }) %>
-                            <!--Ptinting out Visited Place name and Coordinates-->
-                                  <ul>
-                                  <li>  <%= obj[i].Name %> </li>
-                                  </ul>
-                                   <h5> Places Coordinates(Lat):</h5> <%= obj[i].Lat %>
-                                   <h5> Places Coordinates(Lng):</h5> <%= obj[i].Lng %>
-                    <% } %>
+     <style>
+          .iconQuestion {font-size: 2em;   
+               margin-left: 10px;
+               margin-right: 50px;
+     }
+#scores {      font-size: 40px;
+    
+}
+#mainFrame {   width: 80%; 
+               height: auto; 
+               margin:0 auto; 
+               z-index: -3;
+               border-radius: 25px; 
+               background: rgb(234, 178, 39, 0.9); 
+               padding-bottom: 10px;
+     }
+#correctAnswer{background: rgb(79, 46, 22, 0.75);
+               width: 45%;
+               line-height: 1em;
+               padding: 0;
+               margin: 0 auto;
+               border-radius: 20px;
+               border: 2px silver solid;
+               color: white;
+}
  
+#answerOptions{list-style-type: none; 
+               font-size: 2em;
+               z-index: -2;
+               
+     }
 
-            <div id='gameEndScreen'>
-                <div  id='gameEndScreenSmall'> 
-                  <h1>Your Score is: <h2 id='finalScreenScores'></h2></h1>
-                  <button id="playSameGameButton" class="btn btn-lg btn-warning">Play again</button> 
-                  <button id="newGameButton" class="btn btn-lg btn-success">New country</button>
+    #gameEndScreen {width: 100%; 
+               height: 880px; 
+               margin:0 auto; 
+               border-radius: 25px; 
+               background: rgb(167, 196, 242, 0.7); 
+               padding-bottom: 10px;
+               position: absolute;
+               top:0px;
+               bottom: 15px;
+               z-index: 15;
+               display: none;
+    }
+    #gameEndScreenSmall {
+                width: 40%; 
+               height: 25%; 
+               margin:0 auto; 
+               border-radius: 25px; 
+               background: rgb(237, 248, 255); 
+               padding-bottom: 10px;
+               position: relative;
+               top:250px;
+               bottom: 15px;
+               z-index: 15;
+    }
+    #finalScreenScores {
+               width: 45%;
+               height: 25%;
+               border: 1px  solid silver;
+    }
+#question {    position: relative;
+               z-index: 1;
+               margin-left:10%; 
+               top: 20px; 
+               padding-top: 30px;
+               text-align:center;
+               width: 82%; 
+               height: 124px;
+               border-radius: 25px; 
+               border: 2px solid silver; 
+               font-size: 24px;
+               background: rgb(242, 230, 201,0.55); 
+               color: "white";
+     }
+#info {color: white;}
+#controls {margin-top: 35px;
+    margin-left: 5%;
+}
+
+.wrong {background: rgb(79, 46, 22, 0.75);
+               margin-left:3%; 
+               width: 45%;
+               line-height: 1em;
+               padding: 0;
+               margin: 0 auto;
+               border-radius: 20px;
+               border: 2px silver solid;
+               color: ivory;
+}
+.noSelect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+     </style>
+</head>
+<body>
+    <h1>Countris Visited: </h1>
+    <% countNames.forEach(function(country){ %>
+    <%= country %>
+    <% }) %>
+    
+    
+    
+    <div id='gameEndScreen'>
+        <div  id='gameEndScreenSmall'> 
+              <h1>Your Score is: <h2 id='finalScreenScores'></h2></h1>
+              <button id="playSameGameButton" class="btn btn-lg btn-warning">Play again</button> 
+              <button id="newGameButton" class="btn btn-lg btn-success">New country</button> 
+        </div>
+    </div>
+        
+        
+        
+    <div class="container">
+         <h1>Click countries to select</h1>
+         <div class="noSelect" id="info">Selcted countries: <span id="selected"> - </span></div>
+         <div class="noSelect" id="chartdiv" style="margin: 0 auto; width: 90%; height: 350px;"></div>
+         <br>
+            <div class="noSelect" id="mainFrame">
+                <div class="noSelect" id="question"> </div>
+                    <div id="controls" >
+                            <ul id="answerOptions" class="row">
+                                <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>
+                                <li class="col-lg-6 col-md-6 col-xs-12" id='correctAnswer'> </li>
+                                <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>
+                                <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>  
+                            </ul>
+                    </div>
                 </div>
             </div>
+    <div style="width: 100px; 
+                height:100px;
+                position: absolute; 
+                top: 100px; 
+                right: 0px; 
+                font-size: 3em; 
+                display: inline;
+                border: 4px solid orange;
+                border-radius: 25px;
+                background: rgb(242, 230, 201,0.95);
+                color: white;
+                text-align: center;"
+                >
+        <h2  id='scores'> </h2> 
+    </div>
     
-            <div class="container">
-                 <h1>COUNTRIES THAT WAS VISITED</h1>
-                 <div class="noSelect" id="info">Selected countries: <span id="selected"> - </span></div>
-                 <div  class='noSelect' style="margin: 0 auto;width:100%; height: 550px;">  <% include ../partials/editUserProfileMap %> </div>
-                 <br>
-            </div>
-            
-     
-   
-<div class="noSelect" id="mainFrame">
-          <div class="noSelect" id="question"> </div>
-               <div id="controls" >
-                    <ul id="answerOptions" class="row">
-                      <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>
-                         <li class="col-lg-6 col-md-6 col-xs-12" id='correctAnswer'> </li>
-                              <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>
-                                 <li class="wrong col-lg-6 col-md-6 col-xs-12"> </li>  
-                    </ul>
-               </div>
-          </div>
-  </div>
-<div style="width: 100px; 
-            height:100px;
-            position: absolute; 
-            top: 100px; 
-            right: 0px; 
-            font-size: 3em; 
-            display: inline;
-            border: 4px solid orange;
-            border-radius: 25px;
-            background: rgb(242, 230, 201,0.95);
-            color: white;
-            text-align: center;"
-            >
-    <h2  id='scores'> </h2> 
-</div>
-<button id="showAirport">Show airport</button>
-
-
-
-
-
-
-
-<script>
-  var selectable = true;
-var clicked=false;
-var score=100;
-var latlan;
-//////////////////////
-///  CREATING MAP  ///
-/////////////////////
  
-      
+    <script  type="text/javascript">
+     
+        var selectable = true;
+        var clicked=false;
+        var score=100;
+        var latlan;
     
-            
+    //////////////////////
+    ///  CREATING MAP  ///
+    /////////////////////
+   
+    var map = AmCharts.makeChart("chartdiv", {
+      "type": "map",
+      "theme": "dark",
+      "projection": "eckert3",
+      "dataProvider": {
+        "map": "worldLow",
+        "getAreasFromMap": true
+      },
+      "areasSettings": {
+        "selectedColor": "rgb(79, 46, 22, 0.75)",
+        "selectable": selectable
+      },
+      /**
+       * Add click event to track country selection/unselection
+       */
+      "listeners": [{
+        "event": "clickMapObject",
+        "method": function(e) {
+          
+          // Ignore any click not on area
+          if (e.mapObject.objectType !== "MapArea")
+            return;
+          
+          var area = e.mapObject;
+          
+          // Toggle showAsSelected
+          area.showAsSelected = !area.showAsSelected;
+          e.chart.returnInitialColor(area);
+          
+          // Update the list
+          document.getElementById("selected").innerHTML = JSON.stringify(getSelectedCountries());
+         if (currentPlayingCountries !== undefined && clicked!=true) {
+              $.ajax ({url: "https://restcountries.eu/rest/v2/alpha/" + currentPlayingCountries ,
+                   dataType:"json",
+                   success: function(response){
+                      resp = response;
+                      getAnswers(resp);  
+                      b=questions[0] + resp.name;
+                      $('#question').html(b); 
+                      $('#scores').html(score);
+                    latlan =  resp.latlng;
+                   }
+              });
+                
+                questNumber++ 
+                clicked=true;
+         } 
+        }
+      }]
+    });
+
+/**
+ * Function which extracts currently selected country list.
+ * Returns array consisting of country ISO2 codes
+ */
+function getSelectedCountries() {
+  var selected = [];
+  for(var i = 0; i < map.dataProvider.areas.length; i++) {
+    if(map.dataProvider.areas[i].showAsSelected)
+      //selected.push(map.dataProvider.areas[i].id);
+      currentPlayingCountries =  map.dataProvider.areas[i].id;
+  }
+  // return selected;
+}
+
+  ////////////////////
+ ///   END OF MAP ///
+////////////////////
   var gameEndScreen = document.getElementById('gameEndScreen')
   var newGameButton = document.getElementById('newGameButton')
   var finalScreenScores = document.getElementById('finalScreenScores')
@@ -148,18 +277,8 @@ var latlan;
     "What is the name of this museum:  "  
     
   ];
-  // Grabbing only  DATA that we eould need for game from API and saving them into the array accordingly to questions.
-    // Update the list
-      document.getElementById("selected").innerHTML = JSON.stringify(getSelectedCountries());
-      start1 (<%-countriesInfo[0]%>)
-      function start1(countriesInfo){
-                   resp=countriesInfo
-                   b=questions[0] + resp.name;
-                  $('#question').html(b); 
-                  $('#scores').html(score);
-                   questNumber++ 
-                   clicked=true;
-          } 
+  // Grabbing only  DATA that we would need for game from API and saving them into the array accordingly to questions.
+  
   function getAnswers (resp) {
                                 console.log(resp)               
                    answers[0]=(resp.languages[0].name)
@@ -207,7 +326,7 @@ var latlan;
   
   //   Event listener on Correct and wrong answer List Items   //   
   
-  correctListItem.addEventListener("click",function(){
+    correctListItem.addEventListener("click",function(){
        
        for (i=0; i <3; i++){
                  wrongListItems[i].style.background="rgb(79, 46, 22, 0.75)"
@@ -248,9 +367,6 @@ var latlan;
        
        
     
-    
-    
 </script>
-
-   
-  
+     </body>
+</html>

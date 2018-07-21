@@ -1,6 +1,6 @@
  <% include ../partials/header %>
  	
- 	<% let visited1=foundUser.countriesVisited[0].substring(2,foundUser.countriesVisited[0].length-2).split('","') %> 
+ 		
 		<% let foundUserShowPage=foundUser%>
 		<% let foundUser1=foundUserShowPage._id  %>
 		<% let foundUser2=foundUserShowPage.homeCountry.toLowerCase()%>
@@ -13,9 +13,7 @@
 		<script type="text/javascript" src="https://www.amcharts.com/lib/3/ammap.js"></script>
 		<script type="text/javascript" src="https://www.amcharts.com/lib/3/maps/js/<%=foundUser2%>Low.js"></script>
 	
-	<iframe class="editIframe"  src="https://www.youtube.com/embed/4D0hT44D9Jw?autoplay=1&controls=0&mute=1&loop=1&list=PLQmom3TCTIdx5OnTUTOw5hl_4qCTYFqQA;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-	</iframe>
- 
+
 	
  		<% include ../partials/showPageHomeCountryMap %>
 		   <% let facebookURL; %>
@@ -88,19 +86,19 @@
   
 			<div style='color: gray;' class='userDetails'>
 				
-			   <div class="panel panel-danger">First Name
+			   <div class="panel panel-default">First Name
 			     	<div class="panel-heading"><%=  foundUserShowPage.first %> </div>
 			   </div>
-			   <div class="panel panel-danger">Last Name
+			   <div class="panel panel-default">Last Name
 			     	<div class="panel-heading"><%=  foundUserShowPage.last %> </div>
 			   </div>  
-			   <div class="panel panel-danger">Email adddress
+			   <div class="panel panel-default">Email adddress
 			     <div class="panel-heading"><%=  foundUserShowPage.email %> </div>
 			   </div>
-			   <div class="panel panel-danger">Home City
+			   <div class="panel panel-default">Home City
 			     <div class="panel-heading"><%=  foundUserShowPage.homeCity %> </div>
 			   </div>
-			   <div class="panel panel-danger">Home Country
+			   <div class="panel panel-default">Home Country
 			     <div class="panel-heading"><%=  foundUserShowPage.homeCountry %> </div>
 			   </div>
 			  
@@ -121,7 +119,7 @@
 				
 				<div class="col-lg-12"  style="height: 40vh;" class="col-lg-12">
 					 <% include ../partials/editUserProfileMap %> 
-					 	<h4 style='color: white;'>	<%= visited1  %> </h4> 
+					 	<h4 style='color: silver; width:90%; ::-webkit-scrollbar {width: 1px;} overflow-x:scroll;  overflow-y:hidden;'>	<%= foundUser.countriesVisited  %> </h4> 
 					 
 					 <%if(currentUser && foundUser1.equals(currentUser._id)){ %>
      				<a href="/user/<%-currentUser._id%>/game"><button class='btn btn-sm btn-warning pull-right' style="height: 40px; width:140px; position: absolute; top:11px; right:70px;">  Check Your knowledge </button></a>

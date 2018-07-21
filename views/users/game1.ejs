@@ -1,0 +1,265 @@
+    <% include ../partials/header %>
+        <link rel="stylesheet" href="/stylesheets/game.css">
+
+        <style>
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: sans-serif;
+            }
+
+            #root {
+                transition: background-color ease 200ms;
+            }
+
+            #root li span {
+                display: block;
+                border: 1px solid #ccc;
+                background-color: #eee;
+                padding: 15px;
+                border-radius: 8px;
+            }
+            #root li:nth-child(1) span::before {
+                content: "A)";
+            }
+            #root li:nth-child(2) span::before {
+                content: "B)";
+            }
+            #root li:nth-child(3) span::before {
+                content: "C)";
+            }
+            #root li:nth-child(4) span::before {
+                content: "D)";
+            }
+            #root li span::before {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+            #root li {
+                flex-basis: 50%;
+                padding: 8px;
+
+            }
+            #root ul {
+                display: flex;
+                list-style: none;
+                padding: 0;
+                flex-wrap: wrap;
+            }
+            #root.incorrect {
+                background-color: rgba(255, 0, 0, 0.1);
+            }
+            #root.correct {
+                background-color: rgba(0, 255, 0, 0.1);
+            }
+        </style>
+   
+    <div class='row'> 
+        <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+            <div class="container">
+                <div class="noSelect" style="margin-left:15%; margin-top:65px; width: 78%; height: 47vh;">
+                    <button type="button" class="btn btn-primary">
+                          Counties Playing: <span class="badge badge-light"><%= countNames.length %> </span>
+                        </button>  
+                        <h3>
+                                <% for(let i=0;i< countNames.length;i++){ %>
+                                  <span class="badge badge-info"> <%-countNames[i]%> </span>
+                                    	 <%  } %>
+                        </h3>
+                    <% include ../partials/editUserProfileMap %> 
+                </div>    
+            </div>
+        </div>  
+        <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+            <div class="container">
+                <div class="noSelect" style=" text-align:center; font-size:1.4em; margin: 0 auto; margin-top:12vh; width: 80%; height: 50vh;">
+                            <div id="root"></div>
+                </div>    
+            </div>
+        </div> 
+    </div>
+     
+   <script>  
+    
+    let currentPlayingCountries;
+        let countCodesJs =  "<%-  countryCodesArray  %>" ;
+        let countNamesJs =  <%- countNames1 %> ;
+        let countBordersJs =  <%- countBorders1 %> ;
+        let countCapitalsJs =  <%- countCapitals1 %> ;
+        let countPopulationJs =  <%- countPopulation1 %> ;
+        let countLangJs =  <%- countLang1 %> ;
+        let countCurrencyJs =  <%- countCurrency1 %> ;
+        let countRegionJs =   <%- countRegion1 %> ;
+        let countsubRegionJs =   <%- countsubRegion1 %> ;
+    
+    const data = {
+	questions: {
+		language: (countryName) => `What is the official language in the ${countryName}`,
+		currency: (countryName) => `What is the national currency of  ${countryName}`,
+		capital: (countryName) => `What is the capital of the  ${countryName}`,
+		population: (countryName) => `What is the population of the ${countryName}`,
+		region: (countryName) => `Part of which region is ${countryName}`,
+		subRegion: (countryName) => `Part of which sub-region is ${countryName}`,
+		countBorders: (countryName) => `Which countries has border with ${countryName}`,
+	},
+	countryNames: {
+	 <% for(let i=0;i< countNames.length;i++){ %>
+	    <%- countryCodesArray[i]  %>: `<%-countNames[i]%>` , 
+	 <%  } %>
+	},
+	
+	correctAnswers: {
+ 		language: {
+    		 <% for(let i=0;i<countNames.length;i++){ %>
+        	    <%- countryCodesArray[i]  %>: `<%-countLang[i]%>` , 
+        	 <%  } %>
+		},
+		currency: {
+			<% for(let i=0;i<countNames.length;i++){ %>
+    	        <%- countryCodesArray[i]  %>: `<%-countCurrency[i]%>` , 
+    	    <%  } %>
+		},
+		capital: {
+			<% for(let i=0;i<countNames.length;i++){ %>
+    	        <%- countryCodesArray[i]  %>: `<%-countCapitals[i]%>` , 
+    	    <%  } %>
+		},
+		population: {
+		<% for(let i=0;i<countNames.length;i++){ %>
+    	        <%- countryCodesArray[i]  %>: `<%-countPopulation[i]%>` , 
+    	    <%  } %>
+		},
+		region: {
+			<% for(let i=0;i<countNames.length;i++){ %>
+    	        <%- countryCodesArray[i]  %>: `<%-countRegion[i]%>` , 
+    	    <%  } %>
+		},
+		subRegion: {
+			<% for(let i=0;i<countNames.length;i++){ %>
+    	        <%- countryCodesArray[i]  %>: `<%-countsubRegion[i]%>` , 
+    	    <%  } %>
+		},
+		countBorders: {
+		    <% for(let i=0;i<countNames.length;i++){ %>
+    	        <%- countryCodesArray[i]  %>: `<%-countBorders[i]%>` , 
+    	    <%  } %>
+		}
+	},
+};
+   
+const ANSWERS_COUNT = 4;
+const countriesToPlay = [ 'RUS', 'UKR' ];
+
+const getRandomInt = (min, max) => Math.floor(Math.random() * (max + 1 - min)) + min
+
+function shuffle(arr) {
+	const a = [ ...arr ];
+    for (let i = a.length - 1; i > 0; i--) {
+		const j = getRandomInt(0, i);
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+const getRandomEltFromArray = (arr) => arr[getRandomInt(0, arr.length - 1)];
+
+const getQuestionData = (country, type) => {
+    const question = data.questions[type](data.countryNames[country]);
+    const correctAnswer = data.correctAnswers[type][country];
+    const answersSet = new Set([ correctAnswer ]);
+    let attemptsCount = 0;
+    while (answersSet.size < ANSWERS_COUNT && attemptsCount < 100) {
+		const answer = getRandomEltFromArray(Object.values(data.correctAnswers[type]));
+		answersSet.add(answer)
+        attemptsCount++;
+    }
+    const answers = shuffle([ ...answersSet.values() ]);
+    return {
+        question,
+        answers,
+		correctAnswerIndex: answers.indexOf(correctAnswer),
+    }
+};
+
+const MAX_QUESTIONS = 16;
+const rootNode = document.querySelector('#root');
+
+const triggerClass = (className) => {
+	rootNode.classList.add(className);
+	setTimeout(() => {
+		rootNode.classList.remove(className);
+	}, 400);
+}
+
+
+function start () {
+
+	const questions = [];
+
+	rootNode.innerHTML = `
+		<h1 class="question"></h1>
+		<ul class="answers"></ul>
+		<div class='btn btn-lg btn-info'>Score: <span class="score">100</span></div>
+	`
+
+	const questionNode = document.querySelector('.question');
+	const answerNode = document.querySelector('.answers');
+	const scoreNode = document.querySelector('.score');
+
+	const render = ({ question, answers }) => {
+		questionNode.textContent = question;
+		answerNode.innerHTML = answers.map(
+			(a, i) => `<li data-index="${i}"><span>${a}</span></li>`
+		).join('');
+	}
+
+	for (let i = 0; i < MAX_QUESTIONS; i++) {
+		const country = getRandomEltFromArray(Object.keys(data.countryNames));
+		const type = getRandomEltFromArray(Object.keys(data.questions));
+		questions.push(getQuestionData(country, type));
+	}
+
+	let currentQuestionIdx = 0;
+	let score = 100;
+	render(questions[currentQuestionIdx])
+
+	answerNode.addEventListener('click', (evt) => {
+
+		const index = parseInt(evt.target.closest('li').dataset.index, 10);
+		if (questions[currentQuestionIdx].correctAnswerIndex === index) {
+			score+=5;
+			triggerClass('correct');
+		}
+		else {
+			score = Math.max(score - 5, 0);
+			triggerClass('incorrect');
+		}
+		scoreNode.textContent = score;
+		currentQuestionIdx++;
+
+		if (!questions[currentQuestionIdx]) {
+			return rootNode.innerHTML = `
+				<div class="end">
+					<h2>Your score is: ${score}</h2>
+				<h2 class='btn btn-lg btn-primary'>	
+				    <span style='font-size: 1.2em' className="restart" onclick="window.start()">
+						<i class="fa fa-refresh" aria-hidden="true"></i> RESTART
+					</span>
+				</h2>
+				</div>
+			`
+		}
+		render(questions[currentQuestionIdx]);
+	})
+
+};
+
+window.start = start;
+
+start()
+
+
+</script>

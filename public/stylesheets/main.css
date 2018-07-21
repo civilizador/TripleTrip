@@ -18,12 +18,14 @@
 	background: -o-linear-gradient(left, #ACB6E5, #74ebd5);
 	background: linear-gradient(to right, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	}
-  
+::-webkit-scrollbar {
+    width: 1px;
+}
     .profileContainerLeft {width: 100%;
      				   height: 300px;
-     				   background: linear-gradient(to bottom, #666699 0%, #ff99cc 100%);
+     				   background: linear-gradient(to bottom, rgb(143, 155, 173) 0%, #fff9cc 100%);
      				   border-radius: 20px;
-     				   border: 2px solid pink;
+     				   border: 2px ridge linear-gradient(to bottom, rgb(143, 155, 173) 0%, #fff9cc 100%);
      				   background-size: 100% 100%;
       				    float: left;
     }
@@ -37,7 +39,7 @@
      				   margin-left: 10%;
      				   padding: 10px;
      				   float: left;
-     				   color:white;
+     				   color:gray;
     }
     .profileContainerRight {width: 35%;
      				   margin-top: 62px;
@@ -46,7 +48,7 @@
      				   margin-left: 10%;
      				   float: left;
      				   text-align: center;
-     				   color:ivory;
+     				   color:gray;
     }
     .userDetails {margin-top: 3%; color: gray ; }
     .centerMe { 
@@ -67,7 +69,7 @@
     
     .profilePhoto{border-style: ridge;
     border-width: 7px;
-    border-color: pink; 
+    border-color:  #fff9cc ;
     border-radius: 25px;
     	width: 150px;
     	height: 150px;
@@ -87,7 +89,7 @@
     
     .profilePhoto{border-style: ridge;
     border-width: 7px;
-    border-color: pink; 
+    border-color: linear-gradient(to bottom, rgb(143, 155, 173) 0%, #fff9cc 100%); 
     border-radius: 25px;
     	width: 150px;
     	height: 150px;
@@ -192,7 +194,7 @@
          border-radius: 20px;
          text-align: center;
    }
-   #homeCountry {text-transform: lowercase;}
+    #homeCountry {text-transform: lowercase;}
    #countryInput {text-transform: lowercase;}
    #indexPageFirstSlideCaption {margin-bottom: 5vh; text-align: center; }
    #indexPageOthersSlidesCaption {margin-bottom: 10vh;}

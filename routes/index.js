@@ -6,14 +6,12 @@ const Posts       = require("../models/campground");
 const bodyParser  = require('body-parser');
 const multer      = require('multer'); 
 const fetch = require("node-fetch");
-
-
-
-
-const apiRoute11 = "https://restcountries.eu/rest/v2/alpha/"
+let countryCodesArray = [];
+const apiRoute11 = "https://restcountries.eu/rest/v2/alpha/";
 
 async function getAllCountriesInfo (country) {
   console.log("Visited COUNTRY: " + country)
+  countryCodesArray.push(country)
   const response = await fetch( `${apiRoute11}`+`${country}`)
   const json = await response.json()
   return json
@@ -80,24 +78,59 @@ async function getAllCountriesInfo (country) {
      // game route
      
      let countNames = [] ;
+     let countCapitals = [] ;
+     let countPopulation = [] ;
+     let countCurrency = [];
+     let countRegion = [];
+     let countBorders = [];
+     let countsubRegion = [];
+     let countLang = [];
      let countNames2 = [] ;
      
      router.get("/user/:id/game", async function (req,res){
-           try {
+            try {
              const foundUser = await User.findById(req.params.id)
              const visitedCountries = foundUser.countriesVisited[0].substring(2,foundUser.countriesVisited[0].length-2).split('","')
              const countriesInfo = await Promise.all(visitedCountries.map(getAllCountriesInfo))
                     countNames = [] ;
                     countriesInfo.forEach(function(countryInfoDetails) {
-                    countNames.push( [countryInfoDetails.name,countryInfoDetails.capital] )
+                    countNames.push( [countryInfoDetails.name] );
+                    countCapitals.push( [countryInfoDetails.capital] );
+                    countPopulation.push( [countryInfoDetails.population] );
+                    countRegion.push([countryInfoDetails.region]);
+                    countBorders.push(countryInfoDetails.borders[0]+" "+ countryInfoDetails.borders[1]+" "+ countryInfoDetails.borders[2]);
+                    countsubRegion.push([countryInfoDetails.subregion]);
+                    let countCurrencyTemp = countryInfoDetails.currencies[0].name.split(' ')[1];
+                    countLang.push( [countryInfoDetails.languages[0].name] );
+                    countCurrency.push(countCurrencyTemp);
+                    
+                        console.log("Playing Capitals" + countCapitals)
+                        console.log("Playing Population" + countPopulation)
                } )
              const posts = await Posts.find().where('author.id').equals(foundUser._id).exec()
-             res.render("users/game", { 
+             res.render("users/game1", { 
                foundUser, 
                foundPosts:posts,
                currentUser:req.user,
                countriesInfo,
+               countryCodesArray:countryCodesArray,
+               visitedCountries:JSON.stringify(visitedCountries),
                countNames,
+               countNames1: JSON.stringify(countNames),
+               countCapitals,
+               countCapitals1: JSON.stringify(countCapitals),
+               countPopulation,
+               countPopulation1: JSON.stringify(countPopulation),
+               countCurrency,
+               countCurrency1: JSON.stringify(countCurrency),
+               countLang,
+               countLang1: JSON.stringify(countLang),
+               countRegion,
+               countRegion1: JSON.stringify(countRegion),
+               countsubRegion,
+               countsubRegion1:JSON.stringify(countsubRegion),
+               countBorders,
+               countBorders1:JSON.stringify(countBorders),
               });    
            }
            catch (e) {
@@ -163,7 +196,7 @@ async function getAllCountriesInfo (country) {
             //  this function will check if user is loged in and if it does it will run "next()" which is any function that is suppose to be called
         //  for that route. We just put isLoggedIn on wherever page we want to check if user is loged in.
 
-     // USER ROUTE 
+     // USER SHOW ROUTE 
      router.get("/user/:id", function(req, res){
       User.findById(req.params.id, function(err, foundUser) {
        if(err) {req.flash("error","something is wrong")
