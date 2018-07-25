@@ -1,6 +1,5 @@
 <% include ../partials/headerForIndex %>
- 
-    <script type="text/javascript" src="https://www.amcharts.com/lib/3/ammap.js"></script>
+     <script type="text/javascript" src="https://www.amcharts.com/lib/3/ammap.js"></script>
     <script type="text/javascript" src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
           
           
@@ -32,7 +31,7 @@
               <img src="https://images.unsplash.com/photo-1471085507142-12355181f804?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8347073f0cfd075b51c9bdf525e740b4&auto=format&fit=crop&w=1500&q=80" width="1100" height="500">
               <div id='indexPageFirstSlideCaption' class="carousel-caption d-none d-md-block">
                 <h1>Welcome to </h1>
-                <img id='logoMainPage' src='logoLg.png'>
+                 
                 <h2>Most detailed and accurate Travel Blog and Travel adviser</h2>
               </div>
             </div>
@@ -41,7 +40,6 @@
 
                <div class="carousel-item">
                     <img src="<%= allpostsPlaceholder.images[0]  %>" >
-                       
                     </div>
                     <% }); %>
                </div>      
@@ -58,28 +56,106 @@
 </div>
 
      <div class='row'>
-          <div class='col-lg-12 col-md-12'>
-              <div  style='height: 100vh;' class='container'>
-                    <select class='btn btn-lg btn-warning'>
+            <div class='col-lg-12 col-md-12'>
+                <div  style='height: 10vh;' class='container'>
+                    <select id='regionSelect' class='btn btn-lg btn-warning'>
                          <% allposts.forEach(function(allpostsPlaceholder){ %>
-                              <option value="<%= allpostsPlaceholder.region  %>"><%= allpostsPlaceholder.region  %> </option>
+                              <option value="<%= allpostsPlaceholder.region  %>"><%= allpostsPlaceholder.region.toLowerCase()  %> </option>
                          <% }); %>
                      </select>
 
-                    <select class='btn btn-lg btn-warning'>
+                    <select id='subRegionSelect'  class='btn btn-lg btn-warning'>
                          <% allposts.forEach(function(allpostsPlaceholder){ %>
-                              <option value="<%= allpostsPlaceholder.subregion  %>"><%= allpostsPlaceholder.subregion  %> </option>
+                              <option value="<%= allpostsPlaceholder.subregion  %>"><%= allpostsPlaceholder.subregion.toLowerCase()  %> </option>
                          <% }); %>
                     </select>  
-               </div> 
-          </div>
-          <div class='col-lg-12 col-md-12'>
-               <div class='container'>
-                   
-              </div> 
-          </div>
+                </div> 
+            </div>
+            
+            <div class='col-lg-12 col-md-12'>
+                <div id='wrapperOnFilterPage' class='container'>
+                    <div id='filteredPosts'  class='row'>
+                     <% allposts.forEach(function(allpostsPlaceholder){ %>
+                         <div class="col-lg-6 col-md-6 col-sm-12">
+                              <div class="thumbnail">
+                                   <img id='imageOnIndexPage' class='image'  src="<%= allpostsPlaceholder.images[0] %>" >
+                                   <div class="caption">
+                                        <h3> <%=  allpostsPlaceholder.name  %>  </h3>
+                                   </div>
+                                   <div id='descriptionOnIndex' class="caption">
+                                      <!-- Printing first 100 characters using substring(0,100) -->
+                                        <p> <%=  allpostsPlaceholder.desc.substring(0,100);  %>  </p>
+                                   </div>
+                                   <p><em>Submitted by: <a href="/user/<%= allpostsPlaceholder.author.id%>"> <%= allpostsPlaceholder.author.username %> </a>, <%= moment(allpostsPlaceholder.created).fromNow() %></em> </p>                       
+                                  <!--Every object in MONGODB while created gets uniq ID which we use here to create a new camp-specific URL everytime user clics on "more info" button -->
+                                        <a href="/index/<%= allpostsPlaceholder._id %>" class="btn btn-sm btn-warning">More Info</a>
+                              </div>
+                         </div>
+                    <% }); %>
+                     
+                    </div>
+                </div> 
+            </div>
+            
      </div>
      <!-- End of Carousel-->
      
     
 <% include ../partials/footer %>
+
+
+<script>
+    $('#regionSelect').change(function(){
+        // clear container 
+        $('#filteredPosts').html('');
+            let  allposts1 = <%- allposts1 %>
+            for(let i=0;i<allposts1.length;i++){
+                function test1(allposts1){
+                    if( allposts1[i].region == $('#regionSelect').val() ){
+                       $('#filteredPosts').html( 
+                           $('#filteredPosts').html() +
+                            " <div class='col-lg-6 col-md-6 col-sm-12'> "+ 
+                            " <div class='thumbnail'> <img id='imageOnIndexPage' class='image'  src='" +
+                            allposts1[i].images[0] + "' > <div class='caption' > <h3>" +  allposts1[i].name + "</h3> </div>  <div id='descriptionOnIndex' class='caption'> </div> " + 
+                            "<a href='/index/" + allposts1._id + "' class='btn btn-sm btn-warning'>More Info</a> </div> </div>"
+                        )   
+                    }
+                    else {
+                        alert(allposts1[i].country + ' is not ' + ' in '+ $('#regionSelect').val() )    
+                    }
+                }
+                test1(allposts1) 
+            }
+    })
+    $('#subRegionSelect').change(function(){
+        // clear container 
+        $('#filteredPosts').html('');
+            let  allposts1 = <%- allposts1 %>
+            for(let i=0;i<allposts1.length;i++){
+                function test1(allposts1){
+                    if( allposts1[i].subregion == $('#subRegionSelect').val() ){
+                       $('#filteredPosts').html( 
+                           $('#filteredPosts').html() +
+                            " <div class='col-lg-6 col-md-6 col-sm-12'> "+ 
+                            " <div class='thumbnail'> <img id='imageOnIndexPage' class='image'  src='" +
+                            allposts1[i].images[0] + "' > <div class='caption' > <h3>" +  allposts1[i].name + "</h3> </div>  <div id='descriptionOnIndex' class='caption'> </div> " + 
+                            "<a href='/index/" + allposts1._id + "' class='btn btn-sm btn-warning'>More Info</a> </div> </div>"
+                        )   
+                    }
+                    else {
+                        alert(allposts1[i].country + ' is not ' + ' in '+ $('#regionSelect').val() )    
+                    }
+                }
+                test1(allposts1) 
+            }
+    })
+</script>
+
+
+
+
+
+
+
+
+    

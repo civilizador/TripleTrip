@@ -97,39 +97,28 @@
           }
      );
  
-       //INDEX - show all campgrounds
-     router.get("/filter", function(req, res){
-          let noMatch = null;
-          if(req.query.search) {
-          const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-        // Get all campgrounds from DB
-          Posts.find({},function(err,allposts){  //here we pass all objects from DB to "allcamp" using callback function
-          if(err){ console.log(err);} 
-          else {
-               if(allposts.length < 1) {
-                  noMatch = "No campgrounds match that query, please try again.";
-               }
-               res.render("camps/filter",{allposts: allposts, currentUser: req.user, success: req.flash("success"), noMatch: noMatch});
+       // FILTERING ROUTE
+       
+    router.get("/filter", function(req, res){
+        
+                Posts.find({}, function(err, allposts){
+                    if(err){
+                       console.log(err);
+                    } else {
+                        Tags.find({},function(err, alltags) {
+                            if(err){ 
+                                 console.log(err);}
+                                 else{
+                                      res.render("camps/filter",{
+                                          allposts,
+                                          allposts1: JSON.stringify(allposts), 
+                                          tempRegions: tempRegions, 
+                                          alltags:alltags});
+                                           }
+                        })
                     }
-          });
-          } 
-          else {
-           // Get all campgrounds from DB
-          Posts.find({}, function(err, allposts){
-           if(err){
-               console.log(err);
-           } else {
-                Tags.find({},function(err, alltags) {
-                    if(err){ 
-                         console.log(err);}
-                         else{
-                              res.render("camps/filter",{allposts: allposts, noMatch: noMatch, tempRegions: tempRegions, alltags:alltags});
-                                   }
-                })
-           }
-        });
-    }
-});
+                });
+    });
      
           // List all categories
      router.get("/categories", function(req,res){

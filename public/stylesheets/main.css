@@ -209,6 +209,14 @@
                         margin-top: 2%;
                         
    }
+   #wrapperOnFilterPage {border-top: 4px solid rgb(212,175,55,0.5);
+                        border-bottom: 4px solid rgb(212,175,55,0.5);
+                        padding-bottom: 2vh;
+                        padding-top: 2vh;
+                        margin-top: 2vh;
+                         margin-bottom: 2vh;
+                        
+   }
    #addNewPostButton {float: right;
                       margin-right: 50px;
                       margin-top: 50px;
