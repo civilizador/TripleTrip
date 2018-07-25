@@ -201,8 +201,15 @@ function start () {
 
 	rootNode.innerHTML = `
 		<h1 class="question"></h1>
-		<ul class="answers"></ul>
-		<div class='btn btn-lg btn-info'>Score: <span class="score">100</span></div>
+		    <ul class="answers"></ul>
+    		<div class='col-lg-12 col-md-12 col-sm-12'>
+    		    <div class='btn btn-lg btn-info'>Score: <span  style='font-size: 1.2em;' class="score">100</span></div>
+    		</div>
+			<div class='btn btn-lg btn-primary pull-right'>	
+				    <span style='font-size: 1.2em' className="restart" onclick="window.start()">
+						<i class="fa fa-refresh" aria-hidden="true"></i> RESTART
+					</span>
+				</div>
 	`
 
 	const questionNode = document.querySelector('.question');
