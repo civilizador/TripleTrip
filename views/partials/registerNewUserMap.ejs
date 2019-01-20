@@ -10,59 +10,61 @@
    <div class='container'>
         <br>
         <br>
+        <br>
+        <br>
           <h3>Select all countries you have ever visited</h3>
-          <div style='width: 100%; height: 85vh; opacity:0.7' id="chartdivReg"></div>
+          <div style='width: 100%; height: 80vh; opacity:0.7' id="chartdivReg"></div>
           <div id="info">Visited countries: <span id="selected">-</span></div>
  
    </div>
    
-    <script>
-let map = AmCharts.makeChart("chartdivReg", {
-  "type": "map",
-  "theme": "dark",
-  "projection": "eckert3",
-  "dataProvider": {
-    "map": "worldLow",
-    "getAreasFromMap": true
-  },
-  "areasSettings": {
-    "selectedColor": "#CC0000",
-    "selectable": true,
-    "autoZoom": true,
-  },
-  /* Add click event to track country selection/unselection */
-  "listeners": [{
-    "event": "clickMapObject",
-    "method": function(e) {
-      
-      // Ignore any click not on area
-      if (e.mapObject.objectType !== "MapArea")
-        return;
-      
-      var area = e.mapObject;
-      
-      // Toggle showAsSelected
-      area.showAsSelected = !area.showAsSelected;
-      e.chart.returnInitialColor(area);
-      
-      // Update the list
-      document.getElementById("selected").innerHTML = JSON.stringify(getSelectedCountries());
-      document.getElementById("countriesVisited").value = JSON.stringify(getSelectedCountries());
-      
-    }
-  }]
-});
-
-/* Function which extracts currently selected country list.
- */
-function getSelectedCountries() {
-  var selected = [];
+<script>
+    let map = AmCharts.makeChart("chartdivReg", {
+      "type": "map",
+      "theme": "dark",
+      "projection": "eckert3",
+      "dataProvider": {
+        "map": "worldLow",
+        "getAreasFromMap": true
+      },
+      "areasSettings": {
+        "selectedColor": "#CC0000",
+        "selectable": true,
+        "autoZoom": true,
+      },
+      /* Add click event to track country selection/unselection */
+      "listeners": [{
+        "event": "clickMapObject",
+        "method": function(e) {
+          
+          // Ignore any click not on area
+          if (e.mapObject.objectType !== "MapArea")
+            return;
+          
+          var area = e.mapObject;
+          
+          // Toggle showAsSelected
+          area.showAsSelected = !area.showAsSelected;
+          e.chart.returnInitialColor(area);
+          
+          // Update the list
+          document.getElementById("selected").innerHTML = JSON.stringify(getSelectedCountries());
+          document.getElementById("countriesVisited").value = JSON.stringify(getSelectedCountries());
+          
+        }
+      }]
+    });
     
-  for(var i = 0; i < map.dataProvider.areas.length; i++) {
-    if(map.dataProvider.areas[i].showAsSelected)
-      selected.push(map.dataProvider.areas[i].id);
-  }
-  return selected;
-}
+    /* Function which extracts currently selected country list.
+     */
+    function getSelectedCountries() {
+      var selected = [];
+        
+      for(var i = 0; i < map.dataProvider.areas.length; i++) {
+        if(map.dataProvider.areas[i].showAsSelected)
+          selected.push(map.dataProvider.areas[i].id);
+      }
+      return selected;
+    }
 
 </script>

@@ -275,13 +275,15 @@
 		a.nav-link{color: white;}
 		a.navbar-brand{color: white;}
 		   
-		 a.nav-link:hover{border:3px solid white;
-		                  border-radius: 20px;
-		                  color: silver;
+		 a.nav-link:hover{border:3px solid orange;
+		                  border-radius: 15px;
+		                  color: ivory;
+		                  background-color: orange;
 		 }
 		 a.nav-brand:hover{border:3px solid white;
 		                  border-radius: 20px;
-		                  color: silver;
+		                  color: orange!important;
+		                  font-size: 2em!important;
 		 }
 		 .noSelect {
   -webkit-user-select: none;  /* Chrome all / Safari all */
