@@ -1,23 +1,26 @@
- const 
-    express     = require("express"),
-    app         = express(),
-    bodyParser  = require("body-parser"),
-    mongoose    = require("mongoose"),
-    passport    = require("passport"),
-    LocalStrategy = require("passport-local"),
-    Post        = require("./models/campground"),
-    Comment     = require("./models/comment"),
-    User        = require("./models/user"),
-    Tags        = require("./models/tags"),
-    methodOverride = require("method-override"),
-    seedDB      = require("./seeds"),
-    flash       = require("connect-flash"),
-    cloudinary = require('cloudinary');
+  const 
+    express         = require("express"),
+    app             = express(),
+    bodyParser      = require("body-parser"),
+    mongoose        = require("mongoose"),
+    passport        = require("passport"),
+    LocalStrategy   = require("passport-local"),
+    methodOverride  = require("method-override"),
+    seedDB          = require("./seeds"),
+    flash           = require("connect-flash"),
+    cloudinary      = require('cloudinary'),
+    
+    Post            = require("./models/trips"),
+    Comment         = require("./models/comment"),
+    User            = require("./models/user"),
+    Tags            = require("./models/tags");
+    
 
 //  requiring routes
-const indexRoutes      = require("./routes/index");
- const   commentRoutes    = require("./routes/comments");
-  const  campgroundRoutes = require("./routes/campgrounds");
+  const   
+    indexRoutes       = require("./routes/index"),
+    commentRoutes     = require("./routes/comments"),
+    triproutes  = require("./routes/trips");
     
   cloudinary.config({ 
      cloud_name: 'civilizador', 
@@ -64,7 +67,7 @@ const indexRoutes      = require("./routes/index");
     
     //  shorting down route length by defining prefixes for coment campground and auth routes.                
     app.use("/", indexRoutes);
-    app.use("/index", campgroundRoutes);
+    app.use("/index", triproutes);
     app.use("/index/:id/comments", commentRoutes);
 
     app.listen(process.env.PORT,process.env.IP,function(){console.log("Server had been started on port", process.env.PORT)});

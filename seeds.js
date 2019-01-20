@@ -1,5 +1,5 @@
 var  mongoose =     require("mongoose");
-var YelpModel =     require("./models/campground.js");
+var Post =     require("./models/trips.js");
 var Comment =       require("./models/comment.js");
 var data = [
     {
@@ -24,13 +24,13 @@ var data = [
 ];
 
 function seedDB() {
-YelpModel.remove({},function(err)
+Post.remove({},function(err)
 {
     if (err) {console.log(err)}
   console.log("DB WAS CLEARED");
 //   data.forEach(function(seed)
 //   {
-//       YelpModel.create(seed, function(err, camps)
+//       TripS.create(seed, function(err, camps)
 //       {
 //           if(err){console.log(err)} 
 //                     else {

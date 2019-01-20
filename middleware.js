@@ -1,4 +1,4 @@
-var Post = require("./models/campground");
+var Post = require("./models/trips");
 var Comment = require("./models/comment");
 
 var middlewareObj={};

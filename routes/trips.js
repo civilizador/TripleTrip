@@ -5,7 +5,7 @@
      const express     = require("express");
      const fetch       = require("node-fetch");
      const router      = express.Router();
-     const Posts       = require("../models/campground");
+     const Posts       = require("../models/trips");
      const Tags        = require("../models/tags");
      const middleware  = require("../middleware.js");
      const multer      = require('multer'); 

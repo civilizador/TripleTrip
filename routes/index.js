@@ -2,7 +2,7 @@ const express     = require("express");
 const router      = express.Router();
 const passport    = require("passport");       
 const User        = require("../models/user");
-const Posts       = require("../models/campground");
+const Posts       = require("../models/trips");
 const bodyParser  = require('body-parser');
 const multer      = require('multer'); 
 const fetch = require("node-fetch");
@@ -58,7 +58,7 @@ async function getAllCountriesInfo (country) {
 
      // root route "/" with rendering of landing.ejs
      router.get("/",function (req,res) {
-       res.render("landing"); 
+       res.render("users/landing"); 
      });
      
      router.post('/user/:id/upload',multer(multerConfig).single('photo'),function(req,res){
@@ -143,7 +143,7 @@ async function getAllCountriesInfo (country) {
      //   Show REGISTER form page
      
      router.get("/register",function(req, res) {
-      res.render("register",{currentUser:req.user});
+      res.render("users/register",{currentUser:req.user});
     });
 
      //   handle REGISTER logic
@@ -166,7 +166,7 @@ async function getAllCountriesInfo (country) {
                User.register(newUser, req.body.password, function(err, user){
                  if(err){
                   req.flash("error: "+err,"something is wrong");
-                  return res.render("register");
+                  return res.render("users/register");
                 }
                 passport.authenticate("local")(req, res, function(){
                   req.flash("success", "nice to see you again " + user.username.toUpperCase());
@@ -177,7 +177,7 @@ async function getAllCountriesInfo (country) {
 
     //  show login form
     router.get("/login",function(req, res) {
-      res.render("login",{currentUser:req.user});
+      res.render("users/login",{currentUser:req.user});
     });
     
      // handling login logic
