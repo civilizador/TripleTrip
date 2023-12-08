@@ -19,7 +19,7 @@
     "express": "^4.16.3",
     "express-fileupload": "^0.4.0",
     "express-session": "^1.15.6",
-    "froala-editor": "^2.8.4",
+    "froala-editor": "^4.1.4",
     "g": "^2.0.1",
     "locus": "^2.0.1",
     "method-override": "^2.3.10",
